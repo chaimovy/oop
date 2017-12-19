@@ -7,7 +7,7 @@ public class BipartiteGraph<T> {
      * @effects Creates a new graph named graphName. The graph is initially
      * 			empty.
      */
-    public void createGraph() {
+    public BipartiteGraph() {
         // TODO: Implement this method
         
     	
@@ -97,13 +97,12 @@ public class BipartiteGraph<T> {
 
     
     /**
-     * @requires addEdge(graphName, parentName, str, edgeLabel) for some
-     * 			 T str
-     * @return the name of the child of parentName that is connected by the
-     * 		   edge labeled edgeLabel, in the graph graphName.
+     * @requires parentLabel && edgeLabel !=null
+     * @throws exeption
+     * @return the Label of the child of parentLabel that is connected by the
+     * 		   edge labeled edgeLabel
      */
-    public T getChildByEdgeLabel(T graphName, T parentName,
-    								   T edgeLabel) {
+    public T getChildByEdgeLabel(T parentName,T edgeLabel) {
     	//TODO: Implement this method
     	
     	
@@ -111,13 +110,12 @@ public class BipartiteGraph<T> {
 
     
     /**
-     * @requires addEdge(graphName, str, childName, edgeLabel) for some
-     * 			 T str
-     * @return the name of the parent of childName that is connected by the 
-     * 		   edge labeled edgeLabel, in the graph graphName.
+     * @requires childLabel && edgeLabel !=null
+     * @throws exeption
+     * @return the Label of the parent of childLabel that is connected by the
+     * 		   edge labeled edgeLabel
      */
-    public T getParentByEdgeLabel(T graphName, T childName,
-    									T edgeLabel) {
+    public T getParentByEdgeLabel(T childLabel,T edgeLabel) {
     	//TODO: Implement this method
     	
     	
