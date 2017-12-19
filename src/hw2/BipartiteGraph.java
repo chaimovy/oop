@@ -5,16 +5,18 @@ import java.util.List;
 import java.util.Map;
 
 public class BipartiteGraph<T> {
-	private Map<Node<T>, Map<T,Node<T>>> parents;
-	private Map<Node<T>, Map<T,Node<T>>> children;
+	private Map<T, Map<T,T>> blackParents;
+	private Map<T, Map<T,T>> whiteParents;
+	private Map<T, Map<T,T>> children;
     /**
      * @modifies this
      * @effects Creates a new graph named graphName. The graph is initially
      * 			empty.
      */
     public BipartiteGraph() {
-        parents=new HashMap<Node<T>,Map<T,Node<T>>>();
-        children=new HashMap<Node<T>,Map<T,Node<T>>>();
+    	blackParents=new HashMap<T,Map<T,T>>();
+    	whiteParents=new HashMap<T,Map<T,T>>();
+        children=new HashMap<T,Map<T,T>>();
         
     	
     }
@@ -26,11 +28,11 @@ public class BipartiteGraph<T> {
      * @effects Adds a black node represented by the T nodeName to this.
      */
     public void addBlackNode(T nodeLabel) {
-    	if (parents.containsKey(nodeLabel))
+    	if (blackParents.containsKey(nodeLabel))
     	{
     		return; //todo: throw exception
     	}
-    	parents.put(new Node<T>(nodeLabel,false), new HashMap<T,Node<T>>());
+    	blackParents.put(nodeLabel, new HashMap<T,T>());
     	
     	
     }
@@ -43,11 +45,11 @@ public class BipartiteGraph<T> {
      * @effects Adds a white node represented by the T nodeLable to this.
      */
     public void addWhiteNode(T nodeLabel) {
-    	if (parents.containsKey(nodeLabel))
+    	if (whiteParents.containsKey(nodeLabel))
     	{
     		return; //todo: throw exception
     	}
-    	parents.put(new Node<T>(nodeLabel,true), new HashMap<T,Node<T>>());
+    	whiteParents.put(nodeLabel, new HashMap<T,T>());
     	
     	
     }
@@ -61,7 +63,7 @@ public class BipartiteGraph<T> {
      * 			edgeLabel.
      */
     public void addEdge(T parentLabel, T childLabel, T edgeLabel) {
-    	if ()
+    	
     	
     	
     }
