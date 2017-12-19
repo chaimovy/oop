@@ -1,4 +1,4 @@
-package homework2;
+package hw2;
 
 import java.util.*;
 
@@ -16,7 +16,7 @@ public class BipartiteGraphTestDriver {
      */
     public BipartiteGraphTestDriver () {
     	// TODO: Implement this constructor
-       
+    	graphs = new Map<String, BipartiteGraph<String>>();
        
     }
 

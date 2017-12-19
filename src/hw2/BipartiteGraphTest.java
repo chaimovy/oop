@@ -1,4 +1,4 @@
-package homework2;
+package hw2;
 
 import static org.junit.Assert.*;
 import org.junit.Test;

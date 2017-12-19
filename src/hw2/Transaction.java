@@ -1,4 +1,4 @@
-package homework2;
+package hw2;
 
 /**
  * This class implements a transaction in a graph of payment channels.

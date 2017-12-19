@@ -1,4 +1,4 @@
-package homework2;
+package hw2;
 
 /**
  * The Simulatable interface is implemented by each of the pipes and filters in
