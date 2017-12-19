@@ -1,6 +1,6 @@
 package homework2;
 
-/**
+/** pls be gentle jonna
  * The Simulatable interface is implemented by each of the pipes and filters in
  * a pipe-and-filter simulation.
  */
