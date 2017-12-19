@@ -29,7 +29,7 @@ public class BipartiteGraphTestDriver {
      */
     public void createGraph(String graphName) {
         // TODO: Implement this method
-        
+        graphs.put(graphName, new BipartiteGraph<String>());
     	
     }
 

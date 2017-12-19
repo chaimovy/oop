@@ -56,7 +56,7 @@ public class BipartiteGraph<T> {
      */
     public T listBlackNodes() {
     	//TODO: Implement this method
-    	
+    	return null;
     	
     }
 
@@ -66,7 +66,7 @@ public class BipartiteGraph<T> {
      */
     public T listWhiteNodes() {
     	//TODO: Implement this method
-    	
+    	return null;
     	
     }
 
@@ -78,8 +78,7 @@ public class BipartiteGraph<T> {
      */
     public T listChildren(T parentLabel) {
     	//TODO: Implement this method
-    	
-    	
+    	return null;
     }
 
     
@@ -91,7 +90,7 @@ public class BipartiteGraph<T> {
      */
     public T listParents(T childLabel) {
     	//TODO: Implement this method
-    	
+    	return null;
     	
     }
 
@@ -104,7 +103,7 @@ public class BipartiteGraph<T> {
      */
     public T getChildByEdgeLabel(T parentName,T edgeLabel) {
     	//TODO: Implement this method
-    	
+    	return null;
     	
     }
 
@@ -117,9 +116,7 @@ public class BipartiteGraph<T> {
      */
     public T getParentByEdgeLabel(T childLabel,T edgeLabel) {
     	//TODO: Implement this method
-    	
+    	return null;
     	
     }
-}
-
 }
