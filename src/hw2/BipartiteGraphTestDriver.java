@@ -88,10 +88,13 @@ public class BipartiteGraphTestDriver {
      * 		   in the graph graphName, in alphabetical order.
      */
     public String listBlackNodes(String graphName) {
-    	List<String> rawList = graphs.get(graphName).listBlackNodes();
+    	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listBlackNodes();
     	String NodesList = "";
-    	for (String str : rawList) {
-    		NodesList += str + " ";
+    	for (int i=0; i<rawList.size(); i++) {
+    		if (i==rawList.size()-1)
+    			NodesList += rawList.get(i) + "";
+    		else
+    			NodesList += rawList.get(i) + " ";
 		}
     	return NodesList;
     }
@@ -103,10 +106,13 @@ public class BipartiteGraphTestDriver {
      * 		   in the graph graphName, in alphabetical order.
      */
     public String listWhiteNodes(String graphName) {
-    	List<String> rawList = graphs.get(graphName).listWhiteNodes();
+       	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listWhiteNodes();
     	String NodesList = "";
-    	for (String str : rawList) {
-    		NodesList += str + " ";
+    	for (int i=0; i<rawList.size(); i++) {
+    		if (i==rawList.size()-1)
+    			NodesList += rawList.get(i) + "";
+    		else
+    			NodesList += rawList.get(i) + " ";
 		}
     	return NodesList;
     }
@@ -118,10 +124,13 @@ public class BipartiteGraphTestDriver {
      * 		   parentName in the graph graphName, in alphabetical order.
      */
     public String listChildren(String graphName, String parentName) {
-    	List<String> rawList = graphs.get(graphName).listChildren(parentName);
+       	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listChildren(parentName);
     	String NodesList = "";
-    	for (String str : rawList) {
-    		NodesList += str + " ";
+    	for (int i=0; i<rawList.size(); i++) {
+    		if (i==rawList.size()-1)
+    			NodesList += rawList.get(i) + "";
+    		else
+    			NodesList += rawList.get(i) + " ";
 		}
     	return NodesList;
     }
@@ -133,10 +142,15 @@ public class BipartiteGraphTestDriver {
      * 		   childName in the graph graphName, in alphabetical order.
      */
     public String listParents(String graphName, String childName) {
-    	List<String> rawList = graphs.get(graphName).listParents(childName);
+       	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listParents(childName);
     	String NodesList = "";
-    	for (String str : rawList) {
-    		NodesList += str + " ";
+    	if (rawList==null)
+    		return "";
+    	for (int i=0; i<rawList.size(); i++) {
+    		if (i==rawList.size()-1)
+    			NodesList += rawList.get(i) + "";
+    		else
+    			NodesList += rawList.get(i) + " ";
 		}
     	return NodesList;
     }

@@ -235,8 +235,7 @@ public class BipartiteGraph<T> {
         while (itrParent.hasNext()) {
         	Map.Entry<T, Map<T,T>> curEntryParent=itrParent.next();
         	assert !whiteParents.containsKey(curEntryParent.getKey());
-        	itrChild = curEntryParent.getValue().entrySet().iterator();
-        	
+        	itrChild = curEntryParent.getValue().entrySet().iterator();  
         	while (itrChild.hasNext()) {
         		Map.Entry<T,T> curEntryChild=itrChild.next();
         		assert whiteParents.containsKey(curEntryChild.getValue()) && !blackParents.containsKey(curEntryChild.getValue());
