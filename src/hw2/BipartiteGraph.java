@@ -1,8 +1,11 @@
 package hw2;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import HW1.Shape;
 
 public class BipartiteGraph<T> {
 	private Map<T, Map<T,T>> blackParents;
@@ -25,12 +28,12 @@ public class BipartiteGraph<T> {
      * @requires nodeLabel != null
      * @throws exception
      * @modifies this.parents
-     * @effects Adds a black node represented by the T nodeName to this.
+     * @effects Adds a black node represented by the T nodeLabel to this.
      */
     public void addBlackNode(T nodeLabel) {
     	if (blackParents.containsKey(nodeLabel))
     	{
-    		return; //todo: throw exception
+    		return; //TODO: throw exception
     	}
     	blackParents.put(nodeLabel, new HashMap<T,T>());
     	
@@ -47,7 +50,7 @@ public class BipartiteGraph<T> {
     public void addWhiteNode(T nodeLabel) {
     	if (whiteParents.containsKey(nodeLabel))
     	{
-    		return; //todo: throw exception
+    		return; //TODO: throw exception
     	}
     	whiteParents.put(nodeLabel, new HashMap<T,T>());
     	
@@ -63,6 +66,33 @@ public class BipartiteGraph<T> {
      * 			edgeLabel.
      */
     public void addEdge(T parentLabel, T childLabel, T edgeLabel) {
+    	if (whiteParents.containsKey(parentLabel) && whiteParents.containsKey(childLabel) || blackParents.containsKey(parentLabel) && blackParents.containsKey(childLabel)) {
+    		return; //TODO: throw exception same color
+    	}
+    	if (whiteParents.containsKey(parentLabel) && blackParents.containsKey(childLabel)) {
+    		if (whiteParents.get(parentLabel).containsKey(edgeLabel)) {
+    			return; //TODO: throw exception edge exists
+    		}
+    		whiteParents.get(parentLabel).put(edgeLabel, childLabel);
+    		
+    	}
+    	else if (whiteParents.containsKey(childLabel) && blackParents.containsKey(parentLabel)) {
+    		if (blackParents.get(parentLabel).containsKey(edgeLabel)) {
+    			return; //TODO: throw exception edge exists
+    		}
+    		blackParents.get(parentLabel).put(edgeLabel, childLabel);
+    		
+    		
+    	}
+    	else
+    		return; //TODO: throw exception can't connect
+   		if (!children.containsKey(childLabel))
+		{
+			children.put(childLabel, new HashMap<T,T>());
+		}
+		children.get(childLabel).put(edgeLabel, parentLabel);
+		return;
+    	
     	
     	
     	
@@ -73,8 +103,9 @@ public class BipartiteGraph<T> {
      * @return a space-separated list of all the black nodes
      */
     public List<T> listBlackNodes() {
-    	//TODO: Implement this method
-    	return null;
+    	 List<T> blackNodes = new ArrayList<T>(blackParents.keySet());
+    	 
+    	return blackNodes;
     	
     }
 
@@ -83,8 +114,9 @@ public class BipartiteGraph<T> {
      * @return a space-separated list of all the white nodes
      */
     public List<T> listWhiteNodes() {
-    	//TODO: Implement this method
-    	return null;
+    	 List<T> whiteNodes = new ArrayList<T>(whiteParents.keySet());
+    	 
+     	return whiteNodes;
     	
     }
 
@@ -92,22 +124,37 @@ public class BipartiteGraph<T> {
     /**
      * @requires parentLabel !=null
      * @throws exception 
-     * @return a space-separated list of the children of parentLabel
+     * @return list of the children of parentLabel
      */
     public List<T> listChildren(T parentLabel) {
-    	//TODO: Implement this method
-    	return null;
+    	if (blackParents.containsKey(parentLabel))
+    	{
+    		List<T> children = new ArrayList<T>(blackParents.get(parentLabel).values());// TODO: check if collection can be casted to list or change return type
+    		return children;
+    	}
+    	else 	if (whiteParents.containsKey(parentLabel))
+    	{
+    		List<T> children = new ArrayList<T>(whiteParents.get(parentLabel).values());// TODO: check if collection can be casted to list or change return type
+    		return children;
+    	}
+    	else
+    		return null;
+
     }
 
     
     /**
      * @requires childLabel !=null
      * @throws exeption
-     * @return a space-separated list  of the parents of
+     * @return  list  of the parents of
      * 		   childLabel in the graph.
      */
     public List<T> listParents(T childLabel) {
-    	//TODO: Implement this method
+    	if (children.containsKey(childLabel))
+    	{
+    		List<T> parents = new ArrayList<T>(children.get(childLabel).values());// TODO: check if collection can be casted to list or change return type
+    		return parents;
+    	}
     	return null;
     	
     }
@@ -119,9 +166,20 @@ public class BipartiteGraph<T> {
      * @return the Label of the child of parentLabel that is connected by the
      * 		   edge labeled edgeLabel
      */
-    public T getChildByEdgeLabel(T parentName,T edgeLabel) {
-    	//TODO: Implement this method
-    	return null;
+    public T getChildByEdgeLabel(T parentLabel,T edgeLabel) {
+    	T child=whiteParents.get(parentLabel).get(edgeLabel);
+    	if (child != null) {
+    		return child;
+    		
+    	}
+    	else {
+    		child=blackParents.get(parentLabel).get(edgeLabel);
+    		if (child != null) {
+    			return child;
+    		}
+    	} 
+    	
+    	return null;/// TODO: throw exception not found
     	
     }
 
@@ -133,8 +191,8 @@ public class BipartiteGraph<T> {
      * 		   edge labeled edgeLabel
      */
     public T getParentByEdgeLabel(T childLabel,T edgeLabel) {
-    	//TODO: Implement this method
-    	return null;
+    	//TODO: throw exception
+    	return children.get(childLabel).get(edgeLabel);
     	
     }
 }
