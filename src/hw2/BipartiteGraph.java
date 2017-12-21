@@ -2,12 +2,28 @@ package hw2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import HW1.Shape;
+
+
 
 public class BipartiteGraph<T> {
+    /*Abstraction Function:
+     * represents a black-white bipartite graph, where black nodes are connected 
+     * to white nodes by directed edges 
+     */
+
+
+    /* Representation Invariant
+     * no black nodes connected to each other &&
+     * no white nodes connected to each other &&
+     * no more than one edge in each direction between any pair of nodes 
+     */
+
 	private Map<T, Map<T,T>> blackParents;
 	private Map<T, Map<T,T>> whiteParents;
 	private Map<T, Map<T,T>> children;
@@ -20,7 +36,7 @@ public class BipartiteGraph<T> {
     	blackParents=new HashMap<T,Map<T,T>>();
     	whiteParents=new HashMap<T,Map<T,T>>();
         children=new HashMap<T,Map<T,T>>();
-        
+        CheckRep();
     	
     }
 
@@ -31,12 +47,13 @@ public class BipartiteGraph<T> {
      * @effects Adds a black node represented by the T nodeLabel to this.
      */
     public void addBlackNode(T nodeLabel) {
+    	CheckRep();
     	if (blackParents.containsKey(nodeLabel))
     	{
     		return; //TODO: throw exception
     	}
     	blackParents.put(nodeLabel, new HashMap<T,T>());
-    	
+    	CheckRep();
     	
     }
 
@@ -48,12 +65,13 @@ public class BipartiteGraph<T> {
      * @effects Adds a white node represented by the T nodeLable to this.
      */
     public void addWhiteNode(T nodeLabel) {
+    	CheckRep();
     	if (whiteParents.containsKey(nodeLabel))
     	{
     		return; //TODO: throw exception
     	}
     	whiteParents.put(nodeLabel, new HashMap<T,T>());
-    	
+    	CheckRep();
     	
     }
 
@@ -66,18 +84,19 @@ public class BipartiteGraph<T> {
      * 			edgeLabel.
      */
     public void addEdge(T parentLabel, T childLabel, T edgeLabel) {
+    	CheckRep();
     	if (whiteParents.containsKey(parentLabel) && whiteParents.containsKey(childLabel) || blackParents.containsKey(parentLabel) && blackParents.containsKey(childLabel)) {
     		return; //TODO: throw exception same color
     	}
     	if (whiteParents.containsKey(parentLabel) && blackParents.containsKey(childLabel)) {
-    		if (whiteParents.get(parentLabel).containsKey(edgeLabel)) {
+    		if (whiteParents.get(parentLabel).containsKey(edgeLabel) || whiteParents.get(parentLabel).containsValue(childLabel)) {
     			return; //TODO: throw exception edge exists
     		}
     		whiteParents.get(parentLabel).put(edgeLabel, childLabel);
     		
     	}
     	else if (whiteParents.containsKey(childLabel) && blackParents.containsKey(parentLabel)) {
-    		if (blackParents.get(parentLabel).containsKey(edgeLabel)) {
+    		if (blackParents.get(parentLabel).containsKey(edgeLabel) || blackParents.get(parentLabel).containsValue(childLabel))  {
     			return; //TODO: throw exception edge exists
     		}
     		blackParents.get(parentLabel).put(edgeLabel, childLabel);
@@ -91,6 +110,7 @@ public class BipartiteGraph<T> {
 			children.put(childLabel, new HashMap<T,T>());
 		}
 		children.get(childLabel).put(edgeLabel, parentLabel);
+		CheckRep();
 		return;
     	
     	
@@ -195,4 +215,37 @@ public class BipartiteGraph<T> {
     	return children.get(childLabel).get(edgeLabel);
     	
     }
+    private void CheckRep() {
+        Iterator<Map.Entry<T, Map<T,T>>> itrParent=whiteParents.entrySet().iterator();
+        Iterator<Map.Entry<T,T>> itrChild;
+        Set<T> set ;
+        while (itrParent.hasNext()) {
+        	Map.Entry<T, Map<T,T>> curEntryParent=itrParent.next();
+        	assert !blackParents.containsKey(curEntryParent.getKey());
+        	itrChild = curEntryParent.getValue().entrySet().iterator();
+        	while (itrChild.hasNext()) {
+        		Map.Entry<T,T> curEntryChild=itrChild.next();
+        		assert blackParents.containsKey(curEntryChild.getValue()) && !whiteParents.containsKey(curEntryChild.getValue());
+        		set= new HashSet<T>(curEntryParent.getValue().values());
+        		assert set.size()==curEntryParent.getValue().values().size();
+        	}
+        	
+        }
+        itrParent=blackParents.entrySet().iterator();
+        while (itrParent.hasNext()) {
+        	Map.Entry<T, Map<T,T>> curEntryParent=itrParent.next();
+        	assert !whiteParents.containsKey(curEntryParent.getKey());
+        	itrChild = curEntryParent.getValue().entrySet().iterator();
+        	
+        	while (itrChild.hasNext()) {
+        		Map.Entry<T,T> curEntryChild=itrChild.next();
+        		assert whiteParents.containsKey(curEntryChild.getValue()) && !blackParents.containsKey(curEntryChild.getValue());
+        		set= new HashSet<T>(curEntryParent.getValue().values());
+        		assert set.size()==curEntryParent.getValue().values().size();
+        		}
+   
+        }
+    	
+    }
+    
 }
