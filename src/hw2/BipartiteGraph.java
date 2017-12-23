@@ -1,15 +1,13 @@
 package hw2;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-
-
 
 public class BipartiteGraph<T> {
     /*Abstraction Function:
@@ -41,16 +39,16 @@ public class BipartiteGraph<T> {
     }
 
     /**
+     * @throws Exception 
      * @requires nodeLabel != null
-     * @throws exception
      * @modifies this.parents
      * @effects Adds a black node represented by the T nodeLabel to this.
      */
-    public void addBlackNode(T nodeLabel) {
+    public void addBlackNode(T nodeLabel) throws Exception {
     	CheckRep();
     	if (blackParents.containsKey(nodeLabel))
     	{
-    		return; //TODO: throw exception
+    		throw new Exception("Node " + nodeLabel.toString() + "Already Exists.");
     	}
     	blackParents.put(nodeLabel, new HashMap<T,T>());
     	CheckRep();
@@ -59,16 +57,16 @@ public class BipartiteGraph<T> {
 
     
     /**
+     * @throws Exception 
      * @requires nodeLabel != null
-     * @throws exception
      * @modifies this.parents
      * @effects Adds a white node represented by the T nodeLable to this.
      */
-    public void addWhiteNode(T nodeLabel) {
+    public void addWhiteNode(T nodeLabel) throws Exception {
     	CheckRep();
     	if (whiteParents.containsKey(nodeLabel))
     	{
-    		return; //TODO: throw exception
+    		throw new Exception("Node " + nodeLabel.toString() + "Already Exists.");
     	}
     	whiteParents.put(nodeLabel, new HashMap<T,T>());
     	CheckRep();
@@ -77,34 +75,34 @@ public class BipartiteGraph<T> {
 
     
     /**
+     * @throws Exception 
      * @requires parentLabel && childLabel && edgeLabel !=null
      * @modifies this.parents and this.children
      * @effects Adds an edge from the node parentName to the node childName
      * 			in the graph graphName. The new edge's label is the T
      * 			edgeLabel.
      */
-    public void addEdge(T parentLabel, T childLabel, T edgeLabel) {
+    public void addEdge(T parentLabel, T childLabel, T edgeLabel) throws Exception {
     	CheckRep();
     	if (whiteParents.containsKey(parentLabel) && whiteParents.containsKey(childLabel) || blackParents.containsKey(parentLabel) && blackParents.containsKey(childLabel)) {
-    		return; //TODO: throw exception same color
+    		throw new Exception("Cannot connect nodes of same color");
     	}
     	if (whiteParents.containsKey(parentLabel) && blackParents.containsKey(childLabel)) {
-    		if (whiteParents.get(parentLabel).containsKey(edgeLabel) || whiteParents.get(parentLabel).containsValue(childLabel)) {
-    			return; //TODO: throw exception edge exists
-    		}
+    		if (whiteParents.get(parentLabel).containsKey(edgeLabel))
+    			throw new Exception("Nodes are already connected.");
+    		if (whiteParents.get(parentLabel).containsValue(childLabel))
+    			throw new Exception("Node " + parentLabel.toString() + " has already edge " + edgeLabel.toString());
     		whiteParents.get(parentLabel).put(edgeLabel, childLabel);
-    		
     	}
     	else if (whiteParents.containsKey(childLabel) && blackParents.containsKey(parentLabel)) {
-    		if (blackParents.get(parentLabel).containsKey(edgeLabel) || blackParents.get(parentLabel).containsValue(childLabel))  {
-    			return; //TODO: throw exception edge exists
-    		}
+    		if (blackParents.get(parentLabel).containsKey(edgeLabel))
+    			throw new Exception("Nodes are already connected.");
+    		if (blackParents.get(parentLabel).containsValue(childLabel))
+    			throw new Exception("Node " + parentLabel.toString() + " has already edge " + edgeLabel.toString());
     		blackParents.get(parentLabel).put(edgeLabel, childLabel);
-    		
-    		
     	}
     	else
-    		return; //TODO: throw exception can't connect
+    		throw new Exception("One of the nodes doesn't exist.");
    		if (!children.containsKey(childLabel))
 		{
 			children.put(childLabel, new HashMap<T,T>());
@@ -143,64 +141,53 @@ public class BipartiteGraph<T> {
     
     /**
      * @requires parentLabel !=null
-     * @throws exception 
+     * @throws Exception 
      * @return list of the children of parentLabel
      */
-    public List<T> listChildren(T parentLabel) {
+    public List<T> listChildren(T parentLabel) throws Exception {
     	if (blackParents.containsKey(parentLabel))
     	{
     		List<T> children = new ArrayList<T>(blackParents.get(parentLabel).values());// TODO: check if collection can be casted to list or change return type
     		return children;
     	}
-    	else 	if (whiteParents.containsKey(parentLabel))
+    	else if (whiteParents.containsKey(parentLabel))
     	{
     		List<T> children = new ArrayList<T>(whiteParents.get(parentLabel).values());// TODO: check if collection can be casted to list or change return type
     		return children;
     	}
     	else
-    		return null;
+    		throw new Exception("Parent Node doesn't exist.");
 
     }
 
     
     /**
      * @requires childLabel !=null
-     * @throws exeption
      * @return  list  of the parents of
      * 		   childLabel in the graph.
+     * @throws Exception 
      */
-    public List<T> listParents(T childLabel) {
+    public List<T> listParents(T childLabel) throws Exception {
     	if (children.containsKey(childLabel))
     	{
     		List<T> parents = new ArrayList<T>(children.get(childLabel).values());// TODO: check if collection can be casted to list or change return type
     		return parents;
     	}
-    	return null;
+    	throw new Exception("Child Node doesn't exist.");
     	
     }
 
     
     /**
      * @requires parentLabel && edgeLabel !=null
-     * @throws exeption
      * @return the Label of the child of parentLabel that is connected by the
      * 		   edge labeled edgeLabel
+     * @throws Exception 
      */
-    public T getChildByEdgeLabel(T parentLabel,T edgeLabel) {
-    	T child=whiteParents.get(parentLabel).get(edgeLabel);
-    	if (child != null) {
-    		return child;
-    		
-    	}
-    	else {
-    		child=blackParents.get(parentLabel).get(edgeLabel);
-    		if (child != null) {
-    			return child;
-    		}
-    	} 
+    public T getChildByEdgeLabel(T parentLabel,T edgeLabel) throws Exception {
+    	T child = whiteParents.get(parentLabel).get(edgeLabel);
     	
-    	return null;/// TODO: throw exception not found
-    	
+    	throw new Exception("");
     }
 
     
@@ -209,9 +196,13 @@ public class BipartiteGraph<T> {
      * @throws exeption
      * @return the Label of the parent of childLabel that is connected by the
      * 		   edge labeled edgeLabel
+     * @throws Exception 
      */
-    public T getParentByEdgeLabel(T childLabel,T edgeLabel) {
-    	//TODO: throw exception
+    public T getParentByEdgeLabel(T childLabel,T edgeLabel) throws Exception {
+    	if(!children.containsKey(childLabel))
+    		throw new Exception("Node " + childLabel.toString() + "Doesn't exist.");
+    	if(!children.get(childLabel).containsKey(edgeLabel))
+    		throw new Exception("Edge" + edgeLabel.toString() + "Doesn't exist.");
     	return children.get(childLabel).get(edgeLabel);
     	
     }
@@ -241,8 +232,7 @@ public class BipartiteGraph<T> {
         		assert whiteParents.containsKey(curEntryChild.getValue()) && !blackParents.containsKey(curEntryChild.getValue());
         		set= new HashSet<T>(curEntryParent.getValue().values());
         		assert set.size()==curEntryParent.getValue().values().size();
-        		}
-   
+        	}
         }
     	
     }

@@ -31,6 +31,7 @@ public class BipartiteGraphTestDriver {
 
     
     /**
+     * @throws IllegalCommandException 
      * @requires createGraph(graphName)
      *           && nodeName != null
      *           && neither addBlackNode(graphName,nodeName) 
@@ -40,12 +41,13 @@ public class BipartiteGraphTestDriver {
      * @effects Adds a black node represented by the String nodeName to the
      * 			graph named graphName.
      */
-    public void addBlackNode(String graphName, String nodeName) {
+    public void addBlackNode(String graphName, String nodeName) throws IllegalCommandException {
     	graphs.get(graphName).addBlackNode(nodeName);
     }
 
     
     /**
+     * @throws IllegalCommandException 
      * @requires createGraph(graphName)
      *           && nodeName != null
      *           && neither addBlackNode(graphName,nodeName) 
@@ -55,12 +57,13 @@ public class BipartiteGraphTestDriver {
      * @effects Adds a white node represented by the String nodeName to the
      * 			graph named graphName.
      */
-    public void addWhiteNode(String graphName, String nodeName) {
+    public void addWhiteNode(String graphName, String nodeName) throws IllegalCommandException {
     	graphs.get(graphName).addWhiteNode(nodeName);
     }
 
     
     /**
+     * @throws IllegalCommandException 
      * @requires createGraph(graphName)
      *           && ((addBlackNode(parentName) && addWhiteNode(childName))
      *              || (addWhiteNode(parentName) && addBlackNode(childName)))
@@ -76,7 +79,7 @@ public class BipartiteGraphTestDriver {
      */
     public void addEdge(String graphName,
     					String parentName, String childName, 
-                        String edgeLabel) {
+                        String edgeLabel) throws IllegalCommandException {
     	graphs.get(graphName).addEdge(parentName,childName,edgeLabel);
     	
     }
@@ -171,9 +174,10 @@ public class BipartiteGraphTestDriver {
      * 			 string str
      * @return the name of the child of parentName that is connected by the
      * 		   edge labeled edgeLabel, in the graph graphName.
+     * @throws IllegalCommandException 
      */
     public String getChildByEdgeLabel(String graphName, String parentName,
-    								   String edgeLabel) {
+    								   String edgeLabel) throws IllegalCommandException {
     	return graphs.get(graphName).getChildByEdgeLabel(parentName, edgeLabel);
     }
 

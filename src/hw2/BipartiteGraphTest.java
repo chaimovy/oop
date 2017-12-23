@@ -10,7 +10,7 @@ import org.junit.Test;
 public class BipartiteGraphTest {
 
 	@Test
-    public void testExample() {
+    public void testExample() throws IllegalCommandException {
         BipartiteGraphTestDriver driver = new BipartiteGraphTestDriver();
         
         //create a graph
@@ -35,7 +35,7 @@ public class BipartiteGraphTest {
     //  TODO: Add black-box tests
     
 	@Test
-	public void test1() {
+	public void test1() throws IllegalCommandException {
 		BipartiteGraphTestDriver driver = new BipartiteGraphTestDriver();
         
         //create a graph
@@ -52,6 +52,9 @@ public class BipartiteGraphTest {
         driver.addEdge("graph2", "B", "A", "y");
         driver.addEdge("graph2", "B", "D", "x");
         driver.addEdge("graph2", "C", "D", "z");
+        
+        //add problems
+        driver.addEdge("graph2", "A", "C", "y");
         
         //check neighbors
         assertEquals("wrong black nodes", "A D", driver.listBlackNodes("graph2"));
