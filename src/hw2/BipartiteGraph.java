@@ -255,7 +255,23 @@ public class BipartiteGraph<T> {
         		assert set.size()==curEntryParent.getValue().values().size();
         	}
         }
-    	
+    }
+    
+    public T getNextDest(T curr, T finalDest) throws Exception {
+    	if(curr.equals(finalDest))
+    		return curr;
+    	if(listParents(finalDest) == null)
+    		return null;
+    	if(listParents(finalDest).contains(curr))
+    		return finalDest;
+    	else
+	    	for(T parent : listParents(finalDest))
+	    	{
+	    		T next = getNextDest(curr, parent);
+	    		if(next != null)
+	    			return next;
+	    	}
+    	return null;
     }
     
 }

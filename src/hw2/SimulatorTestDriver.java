@@ -1,8 +1,5 @@
 package hw2;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -92,6 +89,7 @@ public class SimulatorTestDriver {
 	 */
 	public String listContents(String simName, String channelName) {
         // TODO: Implement this method
+		return null;
 	}
 
 	/**
@@ -100,6 +98,7 @@ public class SimulatorTestDriver {
 	 */
 	public double getParticipantBalace(String simName, String participantName) {
         // TODO: Implement this method
+		return 0;
 	}
 	
 	/**
