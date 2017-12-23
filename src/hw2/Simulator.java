@@ -21,32 +21,38 @@ public class Simulator<T, V> implements Simulatable<T> {
 		
 		for(T pipe : graph.listBlackNodes()) // we assume transaction is heading to proper destination.
 		{
-			Transaction tx = jobs.get(pipe).poll();
-			finalDest = (T)tx.getDest();
-			try {
-				nextDest = graph.getNextDest(pipe, finalDest);
-			} 
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			finally {
-				if(nextDest != null)
-					sendTransaction(nextDest, tx);
+			if(!jobs.get(pipe).isEmpty())
+			{
+				Transaction tx = jobs.get(pipe).poll();
+				finalDest = (T)tx.getDest();
+				try {
+					nextDest = graph.getNextDest(pipe, finalDest);
+				} 
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				finally {
+					if(nextDest != null)
+						sendTransaction(nextDest, tx);
+				}
 			}
 		}
 		for(T filter : graph.listWhiteNodes())
 		{
-			Transaction tx = jobs.get(filter).poll();
-			finalDest = (T)tx.getDest();
-			try {
-				nextDest = graph.getNextDest(filter, finalDest);
-			} 
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			finally {
-				if(nextDest != null)
-					sendTransaction(nextDest, tx);
+			if(!jobs.get(filter).isEmpty())
+			{
+				Transaction tx = jobs.get(filter).poll();
+				finalDest = (T)tx.getDest();
+				try {
+					nextDest = graph.getNextDest(filter, finalDest);
+				} 
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				finally {
+					if(nextDest != null)
+						sendTransaction(nextDest, tx);
+				}
 			}
 		}
 	}
