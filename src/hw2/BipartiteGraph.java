@@ -185,9 +185,29 @@ public class BipartiteGraph<T> {
      * @throws Exception 
      */
     public T getChildByEdgeLabel(T parentLabel,T edgeLabel) throws Exception {
-    	T child = whiteParents.get(parentLabel).get(edgeLabel);
-    	
-    	throw new Exception("");
+    	T child=null;
+    	if ( !whiteParents.containsKey(parentLabel) && !blackParents.containsKey(parentLabel)){
+    		throw new Exception("Parent Node doesn't exist.");
+    	}
+    	if ( whiteParents.containsKey(parentLabel)){
+    		if (!whiteParents.get(parentLabel).containsKey(edgeLabel)) {
+    			throw new Exception("Parent Node doesn't have edge "+edgeLabel.toString());
+    		}
+    		else {
+    			child= whiteParents.get(parentLabel).get(edgeLabel); 
+    		}
+    			
+    	}
+    	if ( blackParents.containsKey(parentLabel)){
+    		if (!blackParents.get(parentLabel).containsKey(edgeLabel)) {
+    			throw new Exception("Parent Node doesn't have edge "+edgeLabel.toString());
+    		}
+    		else {
+    			child = blackParents.get(parentLabel).get(edgeLabel); 
+    		}
+    			
+    	}
+    	return child;
     }
 
     
