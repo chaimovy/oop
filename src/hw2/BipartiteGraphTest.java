@@ -32,8 +32,37 @@ public class BipartiteGraphTest {
         assertEquals("wrong parents", "n1", driver.listParents ("graph1", "n2"));
     }
     
-    
     //  TODO: Add black-box tests
     
-  
+	@Test
+	public void test1() {
+		BipartiteGraphTestDriver driver = new BipartiteGraphTestDriver();
+        
+        //create a graph
+        driver.createGraph("graph2");
+        
+        //add a pair of nodes
+        driver.addBlackNode("graph2", "A");
+        driver.addWhiteNode("graph2", "B");
+        driver.addWhiteNode("graph2", "C");
+        driver.addBlackNode("graph2", "D");
+        
+        //add an edge
+        driver.addEdge("graph2", "A", "B", "x");
+        driver.addEdge("graph2", "B", "A", "y");
+        driver.addEdge("graph2", "B", "D", "x");
+        driver.addEdge("graph2", "C", "D", "z");
+        
+        //check neighbors
+        assertEquals("wrong black nodes", "A D", driver.listBlackNodes("graph2"));
+        assertEquals("wrong white nodes", "B C", driver.listWhiteNodes("graph2"));
+        assertEquals("wrong children", "A D", driver.listChildren ("graph2", "B"));
+        assertEquals("wrong children", "B", driver.listChildren ("graph2", "A"));
+        assertEquals("wrong children", "D", driver.listChildren ("graph2", "C"));
+        assertEquals("wrong children", "", driver.listChildren ("graph2", "D"));
+        assertEquals("wrong parents", "B", driver.listParents ("graph2", "A"));
+        assertEquals("wrong parents", "A", driver.listParents ("graph2", "B"));
+        assertEquals("wrong parents", "", driver.listParents ("graph2", "C"));
+        assertEquals("wrong parents", "B C", driver.listParents ("graph2", "D"));
+	}
 }

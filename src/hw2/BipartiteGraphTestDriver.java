@@ -89,10 +89,13 @@ public class BipartiteGraphTestDriver {
      */
     public String listBlackNodes(String graphName) {
     	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listBlackNodes();
+    	if (rawList==null)
+    		return "";
+    	Collections.sort(rawList.subList(0, rawList.size()));
     	String NodesList = "";
     	for (int i=0; i<rawList.size(); i++) {
     		if (i==rawList.size()-1)
-    			NodesList += rawList.get(i) + "";
+    			NodesList += rawList.get(i);
     		else
     			NodesList += rawList.get(i) + " ";
 		}
@@ -107,10 +110,13 @@ public class BipartiteGraphTestDriver {
      */
     public String listWhiteNodes(String graphName) {
        	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listWhiteNodes();
-    	String NodesList = "";
+       	if (rawList==null)
+    		return "";
+       	Collections.sort(rawList.subList(0, rawList.size()));
+       	String NodesList = "";
     	for (int i=0; i<rawList.size(); i++) {
     		if (i==rawList.size()-1)
-    			NodesList += rawList.get(i) + "";
+    			NodesList += rawList.get(i);
     		else
     			NodesList += rawList.get(i) + " ";
 		}
@@ -125,10 +131,13 @@ public class BipartiteGraphTestDriver {
      */
     public String listChildren(String graphName, String parentName) {
        	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listChildren(parentName);
-    	String NodesList = "";
+       	if (rawList==null)
+    		return "";
+       	Collections.sort(rawList.subList(0, rawList.size()));
+       	String NodesList = "";
     	for (int i=0; i<rawList.size(); i++) {
     		if (i==rawList.size()-1)
-    			NodesList += rawList.get(i) + "";
+    			NodesList += rawList.get(i);
     		else
     			NodesList += rawList.get(i) + " ";
 		}
@@ -143,12 +152,13 @@ public class BipartiteGraphTestDriver {
      */
     public String listParents(String graphName, String childName) {
        	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listParents(childName);
-    	String NodesList = "";
     	if (rawList==null)
     		return "";
+    	Collections.sort(rawList.subList(0, rawList.size()));
+    	String NodesList = "";
     	for (int i=0; i<rawList.size(); i++) {
     		if (i==rawList.size()-1)
-    			NodesList += rawList.get(i) + "";
+    			NodesList += rawList.get(i);
     		else
     			NodesList += rawList.get(i) + " ";
 		}
