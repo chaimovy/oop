@@ -10,7 +10,7 @@ import org.junit.Test;
 public class BipartiteGraphTest {
 
 	@Test
-    public void testExample() throws IllegalCommandException {
+    public void testExample() throws Exception {
         BipartiteGraphTestDriver driver = new BipartiteGraphTestDriver();
         
         //create a graph
@@ -35,7 +35,7 @@ public class BipartiteGraphTest {
     //  TODO: Add black-box tests
     
 	@Test
-	public void test1() throws IllegalCommandException {
+	public void test1() throws Exception {
 		BipartiteGraphTestDriver driver = new BipartiteGraphTestDriver();
         
         //create a graph

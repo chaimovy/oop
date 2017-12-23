@@ -31,7 +31,7 @@ public class BipartiteGraphTestDriver {
 
     
     /**
-     * @throws IllegalCommandException 
+     * @throws Exception 
      * @requires createGraph(graphName)
      *           && nodeName != null
      *           && neither addBlackNode(graphName,nodeName) 
@@ -41,13 +41,13 @@ public class BipartiteGraphTestDriver {
      * @effects Adds a black node represented by the String nodeName to the
      * 			graph named graphName.
      */
-    public void addBlackNode(String graphName, String nodeName) throws IllegalCommandException {
+    public void addBlackNode(String graphName, String nodeName) throws Exception {
     	graphs.get(graphName).addBlackNode(nodeName);
     }
 
     
     /**
-     * @throws IllegalCommandException 
+     * @throws Exception 
      * @requires createGraph(graphName)
      *           && nodeName != null
      *           && neither addBlackNode(graphName,nodeName) 
@@ -57,13 +57,13 @@ public class BipartiteGraphTestDriver {
      * @effects Adds a white node represented by the String nodeName to the
      * 			graph named graphName.
      */
-    public void addWhiteNode(String graphName, String nodeName) throws IllegalCommandException {
+    public void addWhiteNode(String graphName, String nodeName) throws Exception {
     	graphs.get(graphName).addWhiteNode(nodeName);
     }
 
     
     /**
-     * @throws IllegalCommandException 
+     * @throws Exception 
      * @requires createGraph(graphName)
      *           && ((addBlackNode(parentName) && addWhiteNode(childName))
      *              || (addWhiteNode(parentName) && addBlackNode(childName)))
@@ -79,7 +79,7 @@ public class BipartiteGraphTestDriver {
      */
     public void addEdge(String graphName,
     					String parentName, String childName, 
-                        String edgeLabel) throws IllegalCommandException {
+                        String edgeLabel) throws Exception {
     	graphs.get(graphName).addEdge(parentName,childName,edgeLabel);
     	
     }
@@ -131,8 +131,9 @@ public class BipartiteGraphTestDriver {
      * @requires createGraph(graphName) && createNode(parentName)
      * @return a space-separated list of the names of the children of
      * 		   parentName in the graph graphName, in alphabetical order.
+     * @throws Exception 
      */
-    public String listChildren(String graphName, String parentName) {
+    public String listChildren(String graphName, String parentName) throws Exception {
        	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listChildren(parentName);
        	if (rawList==null)
     		return "";
@@ -152,8 +153,9 @@ public class BipartiteGraphTestDriver {
      * @requires createGraph(graphName) && createNode(childName)
      * @return a space-separated list of the names of the parents of
      * 		   childName in the graph graphName, in alphabetical order.
+     * @throws Exception 
      */
-    public String listParents(String graphName, String childName) {
+    public String listParents(String graphName, String childName) throws Exception {
        	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listParents(childName);
     	if (rawList==null)
     		return "";
@@ -174,10 +176,10 @@ public class BipartiteGraphTestDriver {
      * 			 string str
      * @return the name of the child of parentName that is connected by the
      * 		   edge labeled edgeLabel, in the graph graphName.
-     * @throws IllegalCommandException 
+     * @throws Exception 
      */
     public String getChildByEdgeLabel(String graphName, String parentName,
-    								   String edgeLabel) throws IllegalCommandException {
+    								   String edgeLabel) throws Exception {
     	return graphs.get(graphName).getChildByEdgeLabel(parentName, edgeLabel);
     }
 
@@ -187,9 +189,10 @@ public class BipartiteGraphTestDriver {
      * 			 string str
      * @return the name of the parent of childName that is connected by the 
      * 		   edge labeled edgeLabel, in the graph graphName.
+     * @throws Exception 
      */
     public String getParentByEdgeLabel(String graphName, String childName,
-    									String edgeLabel) {
+    									String edgeLabel) throws Exception {
     	return graphs.get(graphName).getParentByEdgeLabel(childName, edgeLabel);
     }
 }
