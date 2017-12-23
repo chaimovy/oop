@@ -167,12 +167,14 @@ public class BipartiteGraph<T> {
      * @throws Exception 
      */
     public List<T> listParents(T childLabel) throws Exception {
-    	if (children.containsKey(childLabel))
+    	if (whiteParents.containsKey(childLabel) || blackParents.containsKey(childLabel))
     	{
+    		if(!children.containsKey(childLabel))
+    			return null;
     		List<T> parents = new ArrayList<T>(children.get(childLabel).values());// TODO: check if collection can be casted to list or change return type
     		return parents;
     	}
-    	throw new Exception("Child Node doesn't exist.");
+    	throw new Exception("Node " + childLabel.toString() + "doesn't exist.");
     	
     }
 
@@ -183,7 +185,6 @@ public class BipartiteGraph<T> {
      * 		   edge labeled edgeLabel
      * @throws Exception 
      */
-    // dfdg
     public T getChildByEdgeLabel(T parentLabel,T edgeLabel) throws Exception {
     	T child=null;
     	if ( !whiteParents.containsKey(parentLabel) && !blackParents.containsKey(parentLabel)){

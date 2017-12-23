@@ -54,7 +54,6 @@ public class BipartiteGraphTest {
         driver.addEdge("graph2", "C", "D", "z");
         
         //add problems
-        driver.addEdge("graph2", "A", "C", "y");
         
         //check neighbors
         assertEquals("wrong black nodes", "A D", driver.listBlackNodes("graph2"));
