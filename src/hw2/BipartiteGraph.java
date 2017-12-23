@@ -183,6 +183,7 @@ public class BipartiteGraph<T> {
      * 		   edge labeled edgeLabel
      * @throws Exception 
      */
+    // dfdg
     public T getChildByEdgeLabel(T parentLabel,T edgeLabel) throws Exception {
     	T child=null;
     	if ( !whiteParents.containsKey(parentLabel) && !blackParents.containsKey(parentLabel)){
