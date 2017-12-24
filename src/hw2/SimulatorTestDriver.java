@@ -1,5 +1,6 @@
 package hw2;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,17 +16,20 @@ public class SimulatorTestDriver {
 	 * @effects Constructs a new test driver.
 	 */
 	public SimulatorTestDriver() {
-        // TODO: Implement this constructor
+		simulators = new HashMap<String, Simulator<String, Transaction>>();
 	}
 
 	/**
+	 * @throws Exception 
 	 * @requires simName != null
 	 * @modifies this
 	 * @effects Creates a new simulator named simName. The simulator's graph is
 	 *          initially empty.
 	 */
-	public void createSimulator(String simName) {
-	    // TODO: Implement this method
+	public void createSimulator(String simName) throws Exception {
+		if(simulators.containsKey(simName))
+			throw new Exception("Simulator with same name already exists");
+		simulators.put(simName, new Simulator<String,Transaction>());
 	}
 
 	/**
