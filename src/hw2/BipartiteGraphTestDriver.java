@@ -42,7 +42,7 @@ public class BipartiteGraphTestDriver {
      * 			graph named graphName.
      */
     public void addBlackNode(String graphName, String nodeName) throws Exception {
-    	graphs.get(graphName).addBlackNode(nodeName);
+    	graphs.get(graphName).addBlackNode(new Node<String>(nodeName));
     }
 
     
@@ -58,7 +58,7 @@ public class BipartiteGraphTestDriver {
      * 			graph named graphName.
      */
     public void addWhiteNode(String graphName, String nodeName) throws Exception {
-    	graphs.get(graphName).addWhiteNode(nodeName);
+    	graphs.get(graphName).addWhiteNode(new Node<String>(nodeName));
     }
 
     

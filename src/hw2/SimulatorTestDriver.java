@@ -2,6 +2,7 @@ package hw2;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Queue;
 
 /**
  * This class implements a testing driver for Simulator. The driver manages
@@ -44,10 +45,11 @@ public class SimulatorTestDriver {
 	 *          the simulator named simName.
 	 */
 	public void addChannel(String simName, String channelName, double limit) throws Exception {
-	    simulators.get(simName).addPipe(channelName);
+	    simulators.get(simName).addPipe(new Channel(channelName,limit));
 	}
 
 	/**
+	 * @throws Exception 
 	 * @requires createSimulator(simName) && participantName != null 
 	 *           && participantName has not been used in a previous addParticipant(), addChannel()
 	 *           call on this object
@@ -56,11 +58,12 @@ public class SimulatorTestDriver {
 	 * @effects Creates a new Participant named by the String participantName and add
 	 *          it to the simulator named simName.
 	 */
-	public void addParticipant(String simName, String participantName, double fee) {
-        // TODO: Implement this method
+	public void addParticipant(String simName, String participantName, double fee) throws Exception {
+		simulators.get(simName).addFilter(new Participant(participantName, fee));
 	}
 
 	/**
+	 * @throws Exception 
 	 * @requires createSimulator(simName) && ((addPipe(parentName) &&
 	 *           addFilter(childName)) || (addFilter(parentName) &&
 	 *           addPipe(childName))) && edgeLabel != null && node named
@@ -71,8 +74,8 @@ public class SimulatorTestDriver {
 	 *          childName in the simulator named simName. The new edge's label
 	 *          is the String edgeLabel.
 	 */
-	public void addEdge(String simName, String parentName, String childName, String edgeLabel) {
-        // TODO: Implement this method
+	public void addEdge(String simName, String parentName, String childName, String edgeLabel) throws Exception {
+		simulators.get(simName).addEdge(parentName, childName, edgeLabel);
 	}
 
 	/**
@@ -83,7 +86,7 @@ public class SimulatorTestDriver {
 	 *          simulator named simName.
 	 */
 	public void sendTransaction(String simName, String channelName, Transaction tx) {
-        // TODO: Implement this method
+		simulators.get(simName).sendTransaction(channelName, tx);
     }
 	
 	
@@ -93,8 +96,11 @@ public class SimulatorTestDriver {
 	 *         channel named channelName in the simulator named simName.
 	 */
 	public String listContents(String simName, String channelName) {
-        // TODO: Implement this method
-		return null;
+		Queue<Transaction> contents = simulators.get(simName).listContents(channelName);
+		String str = "";
+		for(Transaction content : contents)
+			str += content.getValue() + " ";
+		return str;
 	}
 
 	/**
@@ -102,8 +108,12 @@ public class SimulatorTestDriver {
 	 * @return The sum of all  Transaction values stored in the storage of the participant participantName in the simulator simName
 	 */
 	public double getParticipantBalace(String simName, String participantName) {
-        // TODO: Implement this method
-		return 0;
+        
+		Queue<Transaction> buff = simulators.get(simName).listContents(participantName);
+		double balance = 0;
+		for(Transaction t : buff)
+			balance += t.getValue();
+		return balance;
 	}
 	
 	/**

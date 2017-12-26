@@ -1,28 +1,24 @@
 package hw2;
 
 import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-public class Pipe<T,V> extends Node<T> implements Simulatable<T>{
+public abstract class Pipe<T,V> extends Node<T> implements Simulatable<T>{
+	protected Queue<V> buffer;
+	
 	public Pipe(T label) {
-		super(label);		
+		super(label);
+		buffer = new LinkedBlockingQueue<V>();
+	}
+	public Pipe(Node<T> node) {
+		super(node.getLabel());
+		buffer = new LinkedBlockingQueue<V>();
 	}
 	
 	@Override
-	public void simulate(BipartiteGraph<T> graph) {
-		// TODO Auto-generated method stub
-		
-	}
+	public abstract void simulate(BipartiteGraph<T> graph);
 
-	public Boolean addTransaction(V tx) {
-		return null;
-	
-	}
+	public abstract Boolean addTransaction(V tx);
 
-	public Queue<V> listContents( T channelName) {
-       
-		return null;
-	}
-	
-	
-
+	public abstract Queue<V> getBuffer();
 }

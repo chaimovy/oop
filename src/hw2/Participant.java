@@ -6,14 +6,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Participant extends Filter<String,Transaction>{
 	private double fee;
-	private ArrayList<Transaction> storageBuffer;
-	private Queue<Transaction> outBuffer;
 	
 	public Participant(String label, double fee) {
 		super(label);
 		this.fee = fee;
-		storageBuffer = new ArrayList<Transaction>();
-		outBuffer = new LinkedBlockingQueue<Transaction>();
 	}
 
 	public void addTransaction(Transaction tx)
@@ -29,14 +25,6 @@ public class Participant extends Filter<String,Transaction>{
 		}
 	}
 	
-	public double getBalance()
-	{
-		double balance=0;
-		for(Transaction curr : storageBuffer)
-			balance += curr.getValue();
-		return balance;
-	}
-	
 	@Override
 	public void simulate(BipartiteGraph<String> graph) {
 		for(Node<String> p : getChildren().values()) // assume only 1
@@ -44,4 +32,8 @@ public class Participant extends Filter<String,Transaction>{
 				((Channel)p).addTransaction(outBuffer.poll());
 	}
 
+	@Override
+	public Queue<Transaction> getBuffer() {
+		return storageBuffer;
+	}
 }

@@ -6,14 +6,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Channel extends Pipe<String,Transaction>{
 	private double limit;
 	private double balance;
-	private Queue<Transaction> buffer;
 	
 	public Channel(String label, double limit) {
 		super(label);
 		this.limit = limit;
-		this.balance = 0;
-		buffer = new LinkedBlockingQueue<Transaction>();
-		
+		this.balance = 0;		
 	}
 
 	public Boolean addTransaction(Transaction tx)
@@ -27,9 +24,9 @@ public class Channel extends Pipe<String,Transaction>{
 		return false;
 	}
 	
-	public Queue<Transaction> listContents() {
+	@Override
+	public Queue<Transaction> getBuffer() {
 		return buffer;
-		
 	}
 	
 	@Override
@@ -39,5 +36,4 @@ public class Channel extends Pipe<String,Transaction>{
 			while(buffer.size() != 0)
 				((Participant)p).addTransaction(buffer.poll());
 	}
-
 }

@@ -42,15 +42,14 @@ public class BipartiteGraph<T> {
      * @modifies this.parents
      * @effects Adds a black node represented by the T nodeLabel to this.
      */
-    public void addBlackNode(T nodeLabel) throws Exception {
+    public void addBlackNode(Node<T> node) throws Exception {
     	CheckRep();
-    	if (blackParents.containsKey(nodeLabel))
+    	if (blackParents.containsKey(node.getLabel()))
     	{
-    		throw new Exception("Node " + nodeLabel.toString() + "Already Exists.");
+    		throw new Exception("Node " + node.getLabel().toString() + "Already Exists.");
     	}
-    	blackParents.put(nodeLabel, new Node<T>(nodeLabel));
+    	blackParents.put(node.getLabel(), node);
     	CheckRep();
-    	
     }
 
     
@@ -60,13 +59,13 @@ public class BipartiteGraph<T> {
      * @modifies this.parents
      * @effects Adds a white node represented by the T nodeLable to this.
      */
-    public void addWhiteNode(T nodeLabel) throws Exception {
+    public void addWhiteNode(Node<T> node) throws Exception {
     	CheckRep();
-    	if (whiteParents.containsKey(nodeLabel))
+    	if (whiteParents.containsKey(node.getLabel()))
     	{
-    		throw new Exception("Node " + nodeLabel.toString() + "Already Exists.");
+    		throw new Exception("Node " + node.getLabel().toString() + "Already Exists.");
     	}
-    	whiteParents.put(nodeLabel, new Node<T>(nodeLabel));
+    	whiteParents.put(node.getLabel(), node);
     	CheckRep();
     }
 
