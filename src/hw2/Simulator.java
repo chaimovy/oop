@@ -1,67 +1,69 @@
 package hw2;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
-
-
 public class Simulator<T, V> implements Simulatable<T> {
-	private Map<T, Queue<Transaction>> jobs;
-	
-	public Simulator() {
-		jobs = new HashMap<T, Queue<Transaction>>();
+	private BipartiteGraph<T> graph;
+	public Simulator(){
+		graph = new BipartiteGraph<T>();
 	}
 	
+	
+	/**
+	 * @throws Exception 
+	 * @requires 
+     *           && channelName != null && channelName has
+	 *           not been used in a previous addChannel()  or
+	 *           addParticipant() call on this object
+	 *           limit > 0
+	 * @modifies simulator named simName
+	 * @effects Creates a new Channel named by the String channelName, with a limit, and add it to
+	 *          the simulator named simName.
+	 */
+	public void addPipe(T pipeLabel) throws Exception {
+	    graph.addBlackNode(pipeLabel);
+	}
+	
+	
+	public void addFilter(T filterLabel) throws Exception {
+	    graph.addWhiteNode(filterLabel);
+	}
+	
+	/**
+	 * @throws Exception 
+	 * @requires ((addPipe(parentName) &&
+	 *           addFilter(childName)) || (addFilter(parentName) &&
+	 *           addPipe(childName))) && edgeLabel != null && node named
+	 *           parentName has no other outgoing edge labeled edgeLabel 
+	 *           && node named childName has no other incoming edge labeled edgeLabel
+	 * @modifies simulator named simName
+	 * @effects Adds an edge from the node named parentName to the node named
+	 *          childName in the simulator named simName. The new edge's label
+	 *          is the String edgeLabel.
+	 */
+	public void addEdge(T parentName, T childName, T edgeLabel) throws Exception {
+        graph.addEdge(parentName, childName, childName);
+	}
+
+	
+	/**
+	 * @requires  addChannel(channelName)
+	 *           A transaction Transaction != null
+	 * @modifies channel named channelName
+	 * @effects pushes the Transaction into the channel named channelName in the
+	 *          simulator named simName.
+	 */
+	@SuppressWarnings("unchecked")
+	public void sendTransaction(T pipeLabel, V tx) {
+		Node<T> pipe = graph.findNode(pipeLabel);
+		if (pipe != null)
+			((Pipe<T, V>)pipe).addTransaction(tx);
+    }
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void simulate(BipartiteGraph<T> graph) {
-		// TODO Auto-generated method stub
-		T finalDest;
-		T nextDest = null;
-		
-		for(T pipe : graph.listBlackNodes()) // we assume transaction is heading to proper destination.
-		{
-			if(!jobs.get(pipe).isEmpty())
-			{
-				Transaction tx = jobs.get(pipe).poll();
-				finalDest = (T)tx.getDest();
-				try {
-					nextDest = graph.getNextDest(pipe, finalDest);
-				} 
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-				finally {
-					if(nextDest != null)
-						sendTransaction(nextDest, tx);
-				}
-			}
-		}
-		for(T filter : graph.listWhiteNodes())
-		{
-			if(!jobs.get(filter).isEmpty())
-			{
-				Transaction tx = jobs.get(filter).poll();
-				finalDest = (T)tx.getDest();
-				try {
-					nextDest = graph.getNextDest(filter, finalDest);
-				} 
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-				finally {
-					if(nextDest != null)
-						sendTransaction(nextDest, tx);
-				}
-			}
-		}
-	}
-	
-	public void sendTransaction(T node, Transaction tx) {//TODO: check illegal path
-		if(!jobs.containsKey(node))
-		{
-			jobs.put(node, new LinkedBlockingQueue<Transaction>());
-		}
-		jobs.get(node).add(tx);
+		for(Node<T> pipe : graph.listBlackNodes())
+			((Pipe<T, V>)pipe).simulate(graph);
+		for(Node<T> filter : graph.listWhiteNodes())
+			((Filter<T,V>)filter).simulate(graph);
 	}
 }

@@ -91,9 +91,9 @@ public class BipartiteGraphTestDriver {
      * 		   in the graph graphName, in alphabetical order.
      */
     public String listBlackNodes(String graphName) {
-    	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listBlackNodes();
-    	if (rawList==null)
-    		return "";
+    	ArrayList<String> rawList = new ArrayList<String>();
+    	for(Node<String> child : graphs.get(graphName).listBlackNodes())
+    		rawList.add(child.getLabel());
     	Collections.sort(rawList.subList(0, rawList.size()));
     	String NodesList = "";
     	for (int i=0; i<rawList.size(); i++) {
@@ -112,9 +112,9 @@ public class BipartiteGraphTestDriver {
      * 		   in the graph graphName, in alphabetical order.
      */
     public String listWhiteNodes(String graphName) {
-       	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listWhiteNodes();
-       	if (rawList==null)
-    		return "";
+    	ArrayList<String> rawList = new ArrayList<String>();
+    	for(Node<String> child : graphs.get(graphName).listWhiteNodes())
+    		rawList.add(child.getLabel());
        	Collections.sort(rawList.subList(0, rawList.size()));
        	String NodesList = "";
     	for (int i=0; i<rawList.size(); i++) {
@@ -134,9 +134,9 @@ public class BipartiteGraphTestDriver {
      * @throws Exception 
      */
     public String listChildren(String graphName, String parentName) throws Exception {
-       	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listChildren(parentName);
-       	if (rawList==null)
-    		return "";
+    	ArrayList<String> rawList = new ArrayList<String>();
+    	for(Node<String> child : graphs.get(graphName).listChildren(parentName))
+    		rawList.add(child.getLabel());
        	Collections.sort(rawList.subList(0, rawList.size()));
        	String NodesList = "";
     	for (int i=0; i<rawList.size(); i++) {
@@ -156,9 +156,9 @@ public class BipartiteGraphTestDriver {
      * @throws Exception 
      */
     public String listParents(String graphName, String childName) throws Exception {
-       	ArrayList<String> rawList = (ArrayList<String>) graphs.get(graphName).listParents(childName);
-    	if (rawList==null)
-    		return "";
+    	ArrayList<String> rawList = new ArrayList<String>();
+    	for(Node<String> parent : graphs.get(graphName).listParents(childName))
+    		rawList.add(parent.getLabel());
     	Collections.sort(rawList.subList(0, rawList.size()));
     	String NodesList = "";
     	for (int i=0; i<rawList.size(); i++) {
@@ -180,7 +180,7 @@ public class BipartiteGraphTestDriver {
      */
     public String getChildByEdgeLabel(String graphName, String parentName,
     								   String edgeLabel) throws Exception {
-    	return graphs.get(graphName).getChildByEdgeLabel(parentName, edgeLabel);
+    	return graphs.get(graphName).getChildByEdgeLabel(parentName, edgeLabel).getLabel();
     }
 
     
@@ -193,6 +193,6 @@ public class BipartiteGraphTestDriver {
      */
     public String getParentByEdgeLabel(String graphName, String childName,
     									String edgeLabel) throws Exception {
-    	return graphs.get(graphName).getParentByEdgeLabel(childName, edgeLabel);
+    	return graphs.get(graphName).getParentByEdgeLabel(childName, edgeLabel).getLabel();
     }
 }

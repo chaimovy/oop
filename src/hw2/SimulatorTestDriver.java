@@ -33,6 +33,7 @@ public class SimulatorTestDriver {
 	}
 
 	/**
+	 * @throws Exception 
 	 * @requires createSimulator(simName) 
      *           && channelName != null && channelName has
 	 *           not been used in a previous addChannel()  or
@@ -42,8 +43,8 @@ public class SimulatorTestDriver {
 	 * @effects Creates a new Channel named by the String channelName, with a limit, and add it to
 	 *          the simulator named simName.
 	 */
-	public void addChannel(String simName, String channelName, double limit) {
-	    // TODO: Implement this method
+	public void addChannel(String simName, String channelName, double limit) throws Exception {
+	    simulators.get(simName).addPipe(channelName);
 	}
 
 	/**
