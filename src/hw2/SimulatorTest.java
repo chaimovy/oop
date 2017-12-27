@@ -26,6 +26,6 @@ public class SimulatorTest {
         assertEquals("wrong contents in pipe", "", driver.listContents("simi", "A1").toString());
         assertEquals("wrong BALANCE", "5.0", String.valueOf(driver.getParticipantBalace("simi", "B2")));
         driver.simulate("simi");
-        assertEquals("wrong BALANCE", "1.0", String.valueOf(driver.getParticipantBalace("simi", "B3")));
+        assertEquals("wrong BALANCE", "1.0", c(driver.getParticipantBalace("simi", "B3")));
     }
 }
