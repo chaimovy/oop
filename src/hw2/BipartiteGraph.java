@@ -21,18 +21,18 @@ public class BipartiteGraph<T> {
      * no more than one edge in each direction between any pair of nodes 
      */
 
-	private Map<T, Node<T>> blackParents; // key = node label
-	private Map<T, Node<T>> whiteParents;
-	private Map<T, Node<T>> children;
+	private Map<T, Map<T, T>> blackParents; // key = node label
+	private Map<T, Map<T, T>> whiteParents;
+	private Map<T, Map<T, T>> children;
     /**
      * @modifies this
      * @effects Creates a new graph named graphName. The graph is initially
      * 			empty.
      */
     public BipartiteGraph() {
-    	blackParents=new HashMap<T,Node<T>>();
-    	whiteParents=new HashMap<T,Node<T>>();
-        children=new HashMap<T,Node<T>>();
+    	blackParents=new HashMap<T,Map<T, T>>();
+    	whiteParents=new HashMap<T,Map<T, T>>();
+        children=new HashMap<T,Map<T,T>>();
         CheckRep();
     }
 
@@ -42,13 +42,13 @@ public class BipartiteGraph<T> {
      * @modifies this.parents
      * @effects Adds a black node represented by the T nodeLabel to this.
      */
-    public void addBlackNode(Node<T> node) throws Exception {
+    public void addBlackNode(T node) throws Exception {
     	CheckRep();
-    	if (blackParents.containsKey(node.getLabel()))
+    	if (blackParents.containsKey(node))
     	{
-    		throw new Exception("Node " + node.getLabel().toString() + "Already Exists.");
+    		throw new Exception("Node " + node.toString() + "Already Exists.");
     	}
-    	blackParents.put(node.getLabel(), node);
+    	blackParents.put(node, new HashMap<T, T>());
     	CheckRep();
     }
 
@@ -59,13 +59,12 @@ public class BipartiteGraph<T> {
      * @modifies this.parents
      * @effects Adds a white node represented by the T nodeLable to this.
      */
-    public void addWhiteNode(Node<T> node) throws Exception {
-    	CheckRep();
-    	if (whiteParents.containsKey(node.getLabel()))
+    public void addWhiteNode(T node) throws Exception {
+    	if (whiteParents.containsKey(node))
     	{
-    		throw new Exception("Node " + node.getLabel().toString() + "Already Exists.");
+    		throw new Exception("Node " + node.toString() + "Already Exists.");
     	}
-    	whiteParents.put(node.getLabel(), node);
+    	whiteParents.put(node, new HashMap<T, T>());
     	CheckRep();
     }
 
@@ -74,8 +73,8 @@ public class BipartiteGraph<T> {
      * @throws Exception 
      * @requires parentLabel && childLabel && edgeLabel !=null
      * @modifies this.parents and this.children
-     * @effects Adds an edge from the node parentName to the node childName
-     * 			in the graph graphName. The new edge's label is the T
+     * @effects Adds an edge from the node parentLabel to the node childLabel
+     * 			in the graph. The new edge's label is the T
      * 			edgeLabel.
      */
     public void addEdge(T parentLabel, T childLabel, T edgeLabel) throws Exception {
@@ -84,26 +83,26 @@ public class BipartiteGraph<T> {
     		throw new Exception("Cannot connect nodes of same color");
     	}
     	if (whiteParents.containsKey(parentLabel) && blackParents.containsKey(childLabel)) {
-    		if (whiteParents.get(parentLabel).getParents().containsKey(edgeLabel))
+    		if (whiteParents.get(parentLabel).containsKey(edgeLabel))
     			throw new Exception("Nodes are already connected.");
-    		if (whiteParents.get(parentLabel).getChildren().containsValue(childLabel))
+    		if (whiteParents.get(parentLabel).containsValue(childLabel))
     			throw new Exception("Node " + parentLabel.toString() + " has already edge " + edgeLabel.toString());
-    		whiteParents.get(parentLabel).addChild(edgeLabel, childLabel);
+    		whiteParents.get(parentLabel).put(edgeLabel, childLabel);
     	}
     	else if (whiteParents.containsKey(childLabel) && blackParents.containsKey(parentLabel)) {
-    		if (blackParents.get(parentLabel).getParents().containsKey(edgeLabel))
+    		if (blackParents.get(parentLabel).containsKey(edgeLabel))
     			throw new Exception("Nodes are already connected.");
-    		if (blackParents.get(parentLabel).getChildren().containsValue(childLabel))
+    		if (blackParents.get(parentLabel).containsValue(childLabel))
     			throw new Exception("Node " + parentLabel.toString() + " has already edge " + edgeLabel.toString());
-    		blackParents.get(parentLabel).addChild(edgeLabel, childLabel);
+    		blackParents.get(parentLabel).put(edgeLabel, childLabel);
     	}
     	else
     		throw new Exception("One of the nodes doesn't exist.");
    		if (!children.containsKey(childLabel))
 		{
-			children.put(childLabel, new Node<T>(childLabel));
+			children.put(childLabel, new HashMap<T, T>());
 		}
-		children.get(childLabel).addParent(edgeLabel, parentLabel);
+		children.get(childLabel).put(edgeLabel, parentLabel);
 		CheckRep();
     }
 
@@ -111,16 +110,16 @@ public class BipartiteGraph<T> {
     /**
      * @return a space-separated list of all the black nodes
      */
-    public List<Node<T>> listBlackNodes() {
-    	return new ArrayList<Node<T>>(blackParents.values());
+    public List<T> listBlackNodes() {
+    	return new ArrayList<T>(blackParents.keySet());
     }
 
     
     /**
      * @return a space-separated list of all the white nodes
      */
-    public List<Node<T>> listWhiteNodes() {
-    	return new ArrayList<Node<T>>(whiteParents.values());
+    public List<T> listWhiteNodes() {
+    	return new ArrayList<T>(whiteParents.keySet());
     }
 
     
@@ -129,15 +128,15 @@ public class BipartiteGraph<T> {
      * @throws Exception 
      * @return list of the children of parentLabel
      */
-    public List<Node<T>> listChildren(T parentLabel) throws Exception {
+    public List<T> listChildren(T parentLabel) throws Exception {
     	if (blackParents.containsKey(parentLabel))
     	{
-    		List<Node<T>> children = new ArrayList<Node<T>>(blackParents.get(parentLabel).getChildren().values());// TODO: check if collection can be casted to list or change return type
+    		List<T> children = new ArrayList<T>(blackParents.get(parentLabel).values());// TODO: check if collection can be casted to list or change return type
     		return children;
     	}
     	else if (whiteParents.containsKey(parentLabel))
     	{
-    		List<Node<T>> children = new ArrayList<Node<T>>(whiteParents.get(parentLabel).getChildren().values());// TODO: check if collection can be casted to list or change return type
+    		List<T> children = new ArrayList<T>(whiteParents.get(parentLabel).values());// TODO: check if collection can be casted to list or change return type
     		return children;
     	}
     	else
@@ -151,12 +150,12 @@ public class BipartiteGraph<T> {
      * 		   childLabel in the graph.
      * @throws Exception 
      */
-    public List<Node<T>> listParents(T childLabel) throws Exception {
-    	List<Node<T>> parents = new ArrayList<Node<T>>();
+    public List<T> listParents(T childLabel) throws Exception {
+    	List<T> parents = new ArrayList<T>();
     	if (whiteParents.containsKey(childLabel) || blackParents.containsKey(childLabel))
     	{
     		if(children.containsKey(childLabel))
-    			parents.addAll(children.get(childLabel).getParents().values());// TODO: check if collection can be casted to list or change return type
+    			parents.addAll(children.get(childLabel).values());// TODO: check if collection can be casted to list or change return type
     		return parents;
     	}
     	throw new Exception("Node " + childLabel.toString() + "doesn't exist.");
@@ -169,26 +168,26 @@ public class BipartiteGraph<T> {
      * 		   edge labeled edgeLabel
      * @throws Exception 
      */
-    public Node<T> getChildByEdgeLabel(T parentLabel,T edgeLabel) throws Exception {
-    	Node<T> child = null;
+    public T getChildByEdgeLabel(T parentLabel,T edgeLabel) throws Exception {
+    	T child = null;
     	if ( !whiteParents.containsKey(parentLabel) && !blackParents.containsKey(parentLabel)){
     		throw new Exception("Parent Node doesn't exist.");
     	}
     	if ( whiteParents.containsKey(parentLabel)){
-    		if (!whiteParents.get(parentLabel).getChildren().containsKey(edgeLabel)) {
+    		if (!whiteParents.get(parentLabel).containsKey(edgeLabel)) {
     			throw new Exception("Parent Node doesn't have edge "+edgeLabel.toString());
     		}
     		else {
-    			child= whiteParents.get(parentLabel).getChildren().get(edgeLabel); 
+    			child= whiteParents.get(parentLabel).get(edgeLabel); 
     		}
     			
     	}
     	if ( blackParents.containsKey(parentLabel)){
-    		if (!blackParents.get(parentLabel).getChildren().containsKey(edgeLabel)) {
+    		if (!blackParents.get(parentLabel).containsKey(edgeLabel)) {
     			throw new Exception("Parent Node doesn't have edge "+edgeLabel.toString());
     		}
     		else {
-    			child = blackParents.get(parentLabel).getChildren().get(edgeLabel); 
+    			child = blackParents.get(parentLabel).get(edgeLabel); 
     		}
     			
     	}
@@ -203,51 +202,49 @@ public class BipartiteGraph<T> {
      * 		   edge labeled edgeLabel
      * @throws Exception 
      */
-    public Node<T> getParentByEdgeLabel(T childLabel,T edgeLabel) throws Exception {
+    public T getParentByEdgeLabel(T childLabel,T edgeLabel) throws Exception {
     	if(!children.containsKey(childLabel))
     		throw new Exception("Node " + childLabel.toString() + "Doesn't exist.");
-    	if(!children.get(childLabel).getParents().containsKey(edgeLabel))
+    	if(!children.get(childLabel).containsKey(edgeLabel))
     		throw new Exception("Edge" + edgeLabel.toString() + "Doesn't exist.");
-    	return children.get(childLabel).getParents().get(edgeLabel);
+    	return children.get(childLabel).get(edgeLabel);
     	
     }
     
     private void CheckRep() {
-        Iterator<Map.Entry<T, Node<T>>> itrParent=whiteParents.entrySet().iterator();
-        Iterator<Map.Entry<T,Node<T>>> itrChild;
-        Set<Node<T>> set ;
+        Iterator<Map.Entry<T, Map<T,T>>> itrParent=whiteParents.entrySet().iterator();
+        Iterator<Map.Entry<T,T>>itrChild;
+        Set<T> set ;
         while (itrParent.hasNext()) {
-        	Map.Entry<T, Node<T>> curEntryParent=itrParent.next();
+        	Map.Entry<T, Map<T,T>> curEntryParent=itrParent.next();
         	assert !blackParents.containsKey(curEntryParent.getKey());
-        	itrChild = curEntryParent.getValue().getChildren().entrySet().iterator();
+        	itrChild = curEntryParent.getValue().entrySet().iterator();
         	while (itrChild.hasNext()) {
-        		Map.Entry<T,Node<T>> curEntryChild=itrChild.next();
-        		assert blackParents.containsKey(curEntryChild.getValue().getLabel()) && !whiteParents.containsKey(curEntryChild.getValue().getLabel());
-        		set= new HashSet<Node<T>>(curEntryParent.getValue().getChildren().values());
-        		assert set.size()==curEntryParent.getValue().getChildren().values().size();
+        		Map.Entry<T,T> curEntryChild=itrChild.next();
+        		assert blackParents.containsKey(curEntryChild.getValue()) && !whiteParents.containsKey(curEntryChild.getValue());
+        		set= new HashSet<T>(curEntryParent.getValue().values());
+        		assert set.size()==curEntryParent.getValue().values().size();
         	}
         	
         }
         itrParent=blackParents.entrySet().iterator();
         while (itrParent.hasNext()) {
-        	Map.Entry<T, Node<T>> curEntryParent=itrParent.next();
+        	Map.Entry<T, Map<T,T>> curEntryParent=itrParent.next();
         	assert !whiteParents.containsKey(curEntryParent.getKey());
-        	itrChild = curEntryParent.getValue().getChildren().entrySet().iterator();  
+        	itrChild = curEntryParent.getValue().entrySet().iterator();
         	while (itrChild.hasNext()) {
-        		Map.Entry<T,Node<T>> curEntryChild=itrChild.next();
-        		assert whiteParents.containsKey(curEntryChild.getValue().getLabel()) && !blackParents.containsKey(curEntryChild.getValue().getLabel());
-        		set= new HashSet<Node<T>>(curEntryParent.getValue().getChildren().values());
-        		assert set.size()==curEntryParent.getValue().getChildren().values().size();
+        		Map.Entry<T,T> curEntryChild=itrChild.next();
+        		assert whiteParents.containsKey(curEntryChild.getValue()) && !blackParents.containsKey(curEntryChild.getValue());
+        		set= new HashSet<T>(curEntryParent.getValue().values());
+        		assert set.size()==curEntryParent.getValue().values().size();
         	}
         }
     }
-    
-    public Node<T> findNode(T nodeLabel) {
-    	if (whiteParents.containsKey(nodeLabel)) 
-    		return whiteParents.get(nodeLabel);
-    	if (blackParents.containsKey(nodeLabel)) 
-    		return blackParents.get(nodeLabel);
-    	return null;
-    }
+
+	public Node<T> findNode(T nodeLabel) {
+		if (blackParents.containsKey(nodeLabel))
+		return null;
+	}
+
     
 }
