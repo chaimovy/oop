@@ -22,9 +22,10 @@ public class SimulatorTest {
 		driver.sendTransaction("simi", "A2", new Transaction("B3", 1));
 		 assertEquals("wrong contents in pipe", "5.0 ", driver.listContents("simi", "A1").toString());
         driver.simulate("simi");
+        double t=driver.getParticipantBalace("simi", "B2");
         assertEquals("wrong contents in pipe", "", driver.listContents("simi", "A1").toString());
-        assertEquals("wrong BALANCE", "5.0", driver.getParticipantBalace("simi", "B2"));
+        assertEquals("wrong BALANCE", "5.0", String.valueOf(driver.getParticipantBalace("simi", "B2")));
         driver.simulate("simi");
-        assertEquals("wrong BALANCE", "4.9", driver.getParticipantBalace("simi", "B3"));
+        assertEquals("wrong BALANCE", "1.0", String.valueOf(driver.getParticipantBalace("simi", "B3")));
     }
 }
