@@ -1,11 +1,15 @@
 package hw2;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Queue;
 
 public class Simulator<T, V> implements Simulatable<T> {
 	private BipartiteGraph<T> graph;
+	private Map<T, Node<T,V>> nodeMap;
 	public Simulator(){
 		graph = new BipartiteGraph<T>();
+		nodeMap = new HashMap<T, Node<T,V>>();
 	}
 	
 	/**
@@ -19,13 +23,15 @@ public class Simulator<T, V> implements Simulatable<T> {
 	 * @effects Creates a new Channel named by the String channelName, with a limit, and add it to
 	 *          the simulator named simName.
 	 */
-	public void addPipe(Pipe<T,V> pipe) throws Exception {
+	public void addPipe(T pipe) throws Exception {
 	    graph.addBlackNode(pipe);
+	    nodeMap.put(pipe,new Node<T,V>());
 	}
 	
 	
-	public void addFilter(Filter<T,V> filter) throws Exception {
+	public void addFilter(T filter) throws Exception {
 	    graph.addWhiteNode(filter);
+	    nodeMap.put(filter,new Node<T,V>());
 	}
 	
 	/**
@@ -54,27 +60,24 @@ public class Simulator<T, V> implements Simulatable<T> {
 	 */
 
 	public void sendTransaction(T pipeLabel, V tx) {
-		Node<T> pipe = graph.findNode(pipeLabel);
-		if (pipe != null)
-			((Pipe<T, V>)pipe).addTransaction(tx);
+		nodeMap.get(pipeLabel).addTransaction(tx);
     }
 
 	@Override
 	public void simulate(BipartiteGraph<T> graph) 
 	{
-		for(Node<T> pipe : graph.listBlackNodes())
-			((Pipe<T, V>)pipe).simulate(graph);
-		for(Node<T> filter : graph.listWhiteNodes())
-			((Filter<T,V>)filter).simulate(graph);
+		for(T pipe : graph.listBlackNodes())
+			nodeMap.get(pipe).simulate(graph);
+		for(T filter : graph.listWhiteNodes())
+			nodeMap.get(filter).simulate(graph);
 	}
 
 	public Queue<V> listContents(T nodeLabel)
 	{
-		Node<T> node = graph.findNode(nodeLabel);
-		if(node instanceof Pipe<?,?>)
-			return ((Pipe<T, V>)node).getBuffer();
-		else if(node instanceof Filter<?,?>)
-			return ((Filter<T, V>)node).getBuffer();
-		return null;
+		Node<T,V> node = nodeMap.get(nodeLabel);
+			return node.getBuffer();
+
 	}
+
+
 }

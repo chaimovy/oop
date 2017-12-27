@@ -1,45 +1,24 @@
 package hw2;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-public class Node<T> {
-	private T label;
-	private Map<T, Node<T>> parents;
-	private Map<T, Node<T>> children;
+public abstract class Pipe<T,V> extends Node<T> implements Simulatable<T>{
+	protected Queue<V> buffer;
 	
-	public Node(T label)
-	{
-		this.label = label;
-		parents = new HashMap<T, Node<T>>(); // key = edge label. value = node. nodes contains label inside.
-		children = new HashMap<T, Node<T>>();
+	public Pipe(T label) {
+		super(label);
+		buffer = new LinkedBlockingQueue<V>();
+	}
+	public Pipe(Node<T> node) {
+		super(node.getLabel());
+		buffer = new LinkedBlockingQueue<V>();
 	}
 	
-	public T getLabel()
-	{
-		return label;
-	}
-	
-	public Map<T, Node<T>> getParents()
-	{
-		return parents;
-	}
-	
-	public Map<T, Node<T>> getChildren()
-	{
-		return children;
-	}
-	
-	public void addChild(T edgeLabel, T nodeLabel)
-	{
-		children.put(edgeLabel, new Node<T>(nodeLabel));
-	}
-	
-	public void addParent(T edgeLabel, T nodeLabel)
-	{
-		parents.put(edgeLabel, new Node<T>(nodeLabel));
-	}
-	
+	@Override
+	public abstract void simulate(BipartiteGraph<T> graph);
 
+	public abstract Boolean addTransaction(V tx);
 
+	public abstract Queue<V> getBuffer();
 }
