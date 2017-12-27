@@ -45,7 +45,7 @@ public class SimulatorTestDriver {
 	 *          the simulator named simName.
 	 */
 	public void addChannel(String simName, String channelName, double limit) throws Exception {
-	    simulators.get(simName).addPipe(new Channel(channelName,limit));
+	    simulators.get(simName).addPipe(channelName,new Channel(channelName,limit));
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class SimulatorTestDriver {
 	 *          it to the simulator named simName.
 	 */
 	public void addParticipant(String simName, String participantName, double fee) throws Exception {
-		simulators.get(simName).addFilter(new Participant(participantName, fee));
+		simulators.get(simName).addFilter(participantName,new Participant(participantName, fee));
 	}
 
 	/**
@@ -117,12 +117,13 @@ public class SimulatorTestDriver {
 	}
 	
 	/**
+	 * @throws Exception 
 	 * @requires createSimulator(simName)
 	 * @modifies simulator named simName
 	 * @effects runs simulator named simName for a single time slice.
 	 */
-	public void simulate(String simName) {
-        // TODO: Implement this method
+	public void simulate(String simName) throws Exception {
+		simulators.get(simName).simulate();
 	}
 
 	/**

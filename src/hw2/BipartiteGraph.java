@@ -241,10 +241,7 @@ public class BipartiteGraph<T> {
         }
     }
 
-	public Node<T> findNode(T nodeLabel) {
-		if (blackParents.containsKey(nodeLabel))
-		return null;
-	}
+
 
     
 }

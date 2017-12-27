@@ -1,24 +1,44 @@
 package hw2;
 
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public abstract class Pipe<T,V> extends Node<T> implements Simulatable<T>{
+public  class Node<T,V>  {
 	protected Queue<V> buffer;
-	
-	public Pipe(T label) {
-		super(label);
+	protected Queue<V> outBuffer;
+	private T label;
+	public Node(T label) {
+		this.label=label;
 		buffer = new LinkedBlockingQueue<V>();
-	}
-	public Pipe(Node<T> node) {
-		super(node.getLabel());
-		buffer = new LinkedBlockingQueue<V>();
+		outBuffer = new LinkedBlockingQueue<V>();
+		
 	}
 	
-	@Override
-	public abstract void simulate(BipartiteGraph<T> graph);
 
-	public abstract Boolean addTransaction(V tx);
 
-	public abstract Queue<V> getBuffer();
+	public List<T> simulate(BipartiteGraph<T> graph) throws Exception {
+		return null;
+	}
+
+	public  Boolean addTransaction(V tx) {
+		if (buffer.add(tx))
+			return true;
+		return false;
+	}
+
+	public  Queue<V> getBuffer() {
+		return buffer;
+	}
+	public  Queue<V> getOutBuffer() {
+		return outBuffer;
+	}
+
+
+
+	public T getLabel() {
+		return label;
+	}
+
+
 }

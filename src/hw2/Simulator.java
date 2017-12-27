@@ -1,10 +1,12 @@
 package hw2;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-public class Simulator<T, V> implements Simulatable<T> {
+public class Simulator<T, V>  {
 	private BipartiteGraph<T> graph;
 	private Map<T, Node<T,V>> nodeMap;
 	public Simulator(){
@@ -23,15 +25,15 @@ public class Simulator<T, V> implements Simulatable<T> {
 	 * @effects Creates a new Channel named by the String channelName, with a limit, and add it to
 	 *          the simulator named simName.
 	 */
-	public void addPipe(T pipe) throws Exception {
+	public void addPipe(T pipe,Node<T,V> pipeLabel) throws Exception {
 	    graph.addBlackNode(pipe);
-	    nodeMap.put(pipe,new Node<T,V>());
+	    nodeMap.put(pipe,pipeLabel);
 	}
 	
 	
-	public void addFilter(T filter) throws Exception {
+	public void addFilter(T filter,Node<T,V> filterLabel) throws Exception {
 	    graph.addWhiteNode(filter);
-	    nodeMap.put(filter,new Node<T,V>());
+	    nodeMap.put(filter,filterLabel);
 	}
 	
 	/**
@@ -63,13 +65,27 @@ public class Simulator<T, V> implements Simulatable<T> {
 		nodeMap.get(pipeLabel).addTransaction(tx);
     }
 
-	@Override
-	public void simulate(BipartiteGraph<T> graph) 
+
+	public void simulate() throws Exception 
 	{
-		for(T pipe : graph.listBlackNodes())
-			nodeMap.get(pipe).simulate(graph);
-		for(T filter : graph.listWhiteNodes())
-			nodeMap.get(filter).simulate(graph);
+		List<T> children = new ArrayList<T>(); 
+		for(T pipe : graph.listBlackNodes()) {
+			children=nodeMap.get(pipe).simulate(graph);
+			for (T filter : children) {
+				V tx=nodeMap.get(pipe).getBuffer().poll();
+				if (tx != null)
+					nodeMap.get(filter).addTransaction(tx);
+			}
+		}
+
+		for(T filter : graph.listWhiteNodes()) {
+			children=nodeMap.get(filter).simulate(graph);
+			for (T pipe : children) {
+				V tx=nodeMap.get(filter).getOutBuffer().poll();
+				if (tx != null)
+					nodeMap.get(pipe).addTransaction(tx);
+			}
+		}
 	}
 
 	public Queue<V> listContents(T nodeLabel)
@@ -78,6 +94,7 @@ public class Simulator<T, V> implements Simulatable<T> {
 			return node.getBuffer();
 
 	}
+
 
 
 }

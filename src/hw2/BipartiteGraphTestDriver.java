@@ -42,7 +42,7 @@ public class BipartiteGraphTestDriver {
      * 			graph named graphName.
      */
     public void addBlackNode(String graphName, String nodeName) throws Exception {
-    	graphs.get(graphName).addBlackNode(new Node<String>(nodeName));
+    	graphs.get(graphName).addBlackNode(nodeName);
     }
 
     
@@ -58,7 +58,7 @@ public class BipartiteGraphTestDriver {
      * 			graph named graphName.
      */
     public void addWhiteNode(String graphName, String nodeName) throws Exception {
-    	graphs.get(graphName).addWhiteNode(new Node<String>(nodeName));
+    	graphs.get(graphName).addWhiteNode(nodeName);
     }
 
     
@@ -92,8 +92,8 @@ public class BipartiteGraphTestDriver {
      */
     public String listBlackNodes(String graphName) {
     	ArrayList<String> rawList = new ArrayList<String>();
-    	for(Node<String> child : graphs.get(graphName).listBlackNodes())
-    		rawList.add(child.getLabel());
+    	for(String child : graphs.get(graphName).listBlackNodes())
+    		rawList.add(child);
     	Collections.sort(rawList.subList(0, rawList.size()));
     	String NodesList = "";
     	for (int i=0; i<rawList.size(); i++) {
@@ -113,8 +113,8 @@ public class BipartiteGraphTestDriver {
      */
     public String listWhiteNodes(String graphName) {
     	ArrayList<String> rawList = new ArrayList<String>();
-    	for(Node<String> child : graphs.get(graphName).listWhiteNodes())
-    		rawList.add(child.getLabel());
+    	for(String child : graphs.get(graphName).listWhiteNodes())
+    		rawList.add(child);
        	Collections.sort(rawList.subList(0, rawList.size()));
        	String NodesList = "";
     	for (int i=0; i<rawList.size(); i++) {
@@ -135,8 +135,8 @@ public class BipartiteGraphTestDriver {
      */
     public String listChildren(String graphName, String parentName) throws Exception {
     	ArrayList<String> rawList = new ArrayList<String>();
-    	for(Node<String> child : graphs.get(graphName).listChildren(parentName))
-    		rawList.add(child.getLabel());
+    	for(String child : graphs.get(graphName).listChildren(parentName))
+    		rawList.add(child);
        	Collections.sort(rawList.subList(0, rawList.size()));
        	String NodesList = "";
     	for (int i=0; i<rawList.size(); i++) {
@@ -157,8 +157,8 @@ public class BipartiteGraphTestDriver {
      */
     public String listParents(String graphName, String childName) throws Exception {
     	ArrayList<String> rawList = new ArrayList<String>();
-    	for(Node<String> parent : graphs.get(graphName).listParents(childName))
-    		rawList.add(parent.getLabel());
+    	for(String parent : graphs.get(graphName).listParents(childName))
+    		rawList.add(parent);
     	Collections.sort(rawList.subList(0, rawList.size()));
     	String NodesList = "";
     	for (int i=0; i<rawList.size(); i++) {
@@ -180,7 +180,7 @@ public class BipartiteGraphTestDriver {
      */
     public String getChildByEdgeLabel(String graphName, String parentName,
     								   String edgeLabel) throws Exception {
-    	return graphs.get(graphName).getChildByEdgeLabel(parentName, edgeLabel).getLabel();
+    	return graphs.get(graphName).getChildByEdgeLabel(parentName, edgeLabel);
     }
 
     
@@ -193,6 +193,6 @@ public class BipartiteGraphTestDriver {
      */
     public String getParentByEdgeLabel(String graphName, String childName,
     									String edgeLabel) throws Exception {
-    	return graphs.get(graphName).getParentByEdgeLabel(childName, edgeLabel).getLabel();
+    	return graphs.get(graphName).getParentByEdgeLabel(childName, edgeLabel);
     }
 }

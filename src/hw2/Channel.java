@@ -1,18 +1,20 @@
 package hw2;
 
+import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
-public class Channel extends Pipe<String,Transaction>{
+public class Channel extends Node<String,Transaction>{
 	private double limit;
 	private double balance;
 	
 	public Channel(String label, double limit) {
 		super(label);
 		this.limit = limit;
-		this.balance = 0;		
+		this.balance = 0;	
+		
 	}
-
+	
+	@Override
 	public Boolean addTransaction(Transaction tx)
 	{
 		if(balance + tx.getValue() <= limit)
@@ -30,10 +32,9 @@ public class Channel extends Pipe<String,Transaction>{
 	}
 	
 	@Override
-	public void simulate(BipartiteGraph<String> graph) 
+	public List<String> simulate(BipartiteGraph<String> graph) throws Exception 
 	{
-		for(Node<String> p : getChildren().values())
-			while(buffer.size() != 0)
-				((Participant)p).addTransaction(buffer.poll());
+		return graph.listChildren(getLabel());
+			
 	}
 }
