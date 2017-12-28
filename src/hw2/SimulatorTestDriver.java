@@ -143,7 +143,7 @@ public class SimulatorTestDriver {
 	 * @effects Prints the all edges.
 	 */
 	public void printAllEdges(String simName) {
-        // TODO: Implement this method
+		simulators.get(simName).getAllEdges();
 	}
 
 }

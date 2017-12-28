@@ -220,7 +220,16 @@ public class BipartiteGraph<T,Z> {
     	return children.get(childLabel).get(edgeLabel);
     	
     }
-    
+    public List<T> getAllEdges() {
+    	List<T> edges= new ArrayList<T>();
+    	Iterator<Map.Entry<T, Map<T,T>>> itr = children.entrySet().iterator();
+    	while (itr.hasNext()) {  
+    		Map.Entry<T, Map<T,T>> curEntry=itr.next();
+    		edges.addAll(children.get(curEntry).keySet());
+    	}
+    	return edges;
+    	
+    }
     private void CheckRep() {
         Iterator<Map.Entry<T, Map<T,T>>> itrParent=whiteParents.entrySet().iterator();
         Iterator<Map.Entry<T,T>>itrChild;
