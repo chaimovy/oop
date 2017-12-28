@@ -28,6 +28,7 @@ public class SimulatorTest {
         assertEquals("wrong BALANCE", "5.0", String.valueOf(driver.getParticipantBalace("simi", "B2")));
         driver.simulate("simi");
         assertEquals("wrong BALANCE", "1.0", String.valueOf(driver.getParticipantBalace("simi", "B3")));
+        driver.printAllEdges("simi");
     }
 
 	@Test

@@ -225,7 +225,7 @@ public class BipartiteGraph<T,Z> {
     	Iterator<Map.Entry<T, Map<T,T>>> itr = children.entrySet().iterator();
     	while (itr.hasNext()) {  
     		Map.Entry<T, Map<T,T>> curEntry=itr.next();
-    		edges.addAll(children.get(curEntry).keySet());
+    		edges.addAll(curEntry.getValue().keySet());
     	}
     	return edges;
     	

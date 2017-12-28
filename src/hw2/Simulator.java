@@ -46,7 +46,7 @@ public class Simulator<T, V>  {
 	 *          is the String edgeLabel.
 	 */
 	public void addEdge(T parentName, T childName, T edgeLabel) throws Exception {
-        graph.addEdge(parentName, childName, childName);
+        graph.addEdge(parentName, childName, edgeLabel);
 	}
 
 	
