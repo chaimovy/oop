@@ -6,14 +6,22 @@ import java.util.Queue;
 public class Channel extends Node<String,Transaction>{
 	private double limit;
 	private double balance;
-	
+	/**
+     * @requires label!=null, limit>0
+     * @modifies this
+     * @effects Constracts new Channel. 
+     */
 	public Channel(String label, double limit) {
 		super(label);
 		this.limit = limit;
-		this.balance = 0;	
-		
+		this.balance = 0;
 	}
-	
+	/**
+     * @requires tx!=null
+     * @modifies this.balance
+     * @effects Add transaction to current channel's buffer.
+     * @return true if transaction succeeded, false otherwise
+     */
 	@Override
 	public Boolean addTransaction(Transaction tx)
 	{
@@ -25,12 +33,19 @@ public class Channel extends Node<String,Transaction>{
 		}
 		return false;
 	}
-	
+	/**
+     * @modifies none
+     * @return Channel's buffer
+     */
 	@Override
 	public Queue<Transaction> getBuffer() {
 		return buffer;
 	}
-	
+	/**
+     * @requires graph!=null
+     * @modifies current channel and it's children (participants)
+     * @effects Executes all transactions in channel's buffer.
+     */
 	@Override
 	public void simulate(BipartiteGraph<String, Node<String,Transaction>> graph) 
 	{

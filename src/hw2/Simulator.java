@@ -4,32 +4,34 @@ import java.util.Queue;
 
 public class Simulator<T, V>  {
 	private BipartiteGraph<T, Node<T,V>> graph;
-	//private Map<T, Node<T,V>> nodeMap;
+	/**
+	 * @modifies this
+	 * @effects constructs new simulator.
+	 */
 	public Simulator(){
 		graph = new BipartiteGraph<T, Node<T,V>>();
-		//nodeMap = new HashMap<T, Node<T,V>>();
 	}
 	
 	/**
 	 * @throws Exception 
-	 * @requires 
-     *           && channelName != null && channelName has
-	 *           not been used in a previous addChannel()  or
-	 *           addParticipant() call on this object
-	 *           limit > 0
-	 * @modifies simulator named simName
-	 * @effects Creates a new Channel named by the String channelName, with a limit, and add it to
-	 *          the simulator named simName.
+	 * @requires pipe != null && pipeLabel!=null
+	 * @modifies this.graph
+	 * @effects Adds new pipe to graph and adds link to node mapping
 	 */
-	public void addPipe(T pipe,Node<T,V> pipeLabel) throws Exception {
-	    graph.addBlackNode(pipe);
-	    graph.getNodeMap().put(pipe,pipeLabel);
+	public void addPipe(T pipeLabel,Node<T,V> pipe) throws Exception {
+	    graph.addBlackNode(pipeLabel);
+	    graph.getNodeMap().put(pipeLabel,pipe);
 	}
 	
-	
-	public void addFilter(T filter,Node<T,V> filterLabel) throws Exception {
-	    graph.addWhiteNode(filter);
-	    graph.getNodeMap().put(filter,filterLabel);
+	/**
+	 * @throws Exception 
+	 * @requires filter != null && filterLabel!=null
+	 * @modifies this.graph
+	 * @effects Adds new filter to graph and adds link to node mapping
+	 */
+	public void addFilter(T filterLabel,Node<T,V> filter) throws Exception {
+	    graph.addWhiteNode(filterLabel);
+	    graph.getNodeMap().put(filterLabel,filter);
 	}
 	
 	/**
@@ -48,20 +50,20 @@ public class Simulator<T, V>  {
         graph.addEdge(parentName, childName, childName);
 	}
 
-	
 	/**
-	 * @requires  addChannel(channelName)
-	 *           A transaction Transaction != null
-	 * @modifies channel named channelName
-	 * @effects pushes the Transaction into the channel named channelName in the
-	 *          simulator named simName.
+	 * @requires v != null && transfer object tx!=null
+	 * @modifies this.graph
+	 * @effects Adds new transction to specified pipe.
 	 */
-
 	public void sendTransaction(T pipeLabel, V tx) {
 		graph.getNodeMap().get(pipeLabel).addTransaction(tx);
     }
 
-
+	/**
+	 * @throws Exception
+     * @modifies current graph's nodes
+     * @effects Executes all transactions currently in pipes and filters
+     */
 	public void simulate() throws Exception 
 	{
 		for(T pipe : graph.listBlackNodes()) {
@@ -71,10 +73,14 @@ public class Simulator<T, V>  {
 			graph.getNodeMap().get(filter).simulate(graph);
 		}
 	}
-
+	/**
+	 * @requires nodeLabel!=null
+     * @modifies current graph's nodes
+     * @effects none
+     * @return specified node's buffer.
+     */
 	public Queue<V> listContents(T nodeLabel)
 	{
-		Node<T,V> node = graph.getNodeMap().get(nodeLabel);
-			return node.getBuffer();
+		return graph.getNodeMap().get(nodeLabel).getBuffer();
 	}
 }
