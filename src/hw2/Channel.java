@@ -32,9 +32,22 @@ public class Channel extends Node<String,Transaction>{
 	}
 	
 	@Override
-	public List<String> simulate(BipartiteGraph<String> graph) throws Exception 
+	public void simulate(BipartiteGraph<String, Node<String,Transaction>> graph) 
 	{
-		return graph.listChildren(getLabel());
-			
+		List<String> children;
+		try {
+			children = graph.listChildren(getLabel());
+			while(!graph.getNodeMap().get(getLabel()).getBuffer().isEmpty())
+			{
+				Transaction tx=graph.getNodeMap().get(getLabel()).getBuffer().poll();
+				for (String filter : children) {
+					if (tx != null)
+						graph.getNodeMap().get(filter).addTransaction(tx);
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

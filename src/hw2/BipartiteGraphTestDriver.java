@@ -8,14 +8,14 @@ import java.util.*;
  */
 public class BipartiteGraphTestDriver {
 
-    private Map<String, BipartiteGraph<String>> graphs;
+    private Map<String, BipartiteGraph<String, String>> graphs;
 
     /**
      * @modifies this
      * @effects Constructs a new test driver.
      */
     public BipartiteGraphTestDriver () {
-    	graphs = new HashMap<String, BipartiteGraph<String>>();
+    	graphs = new HashMap<String, BipartiteGraph<String, String>>();
     }
 
     
@@ -26,7 +26,7 @@ public class BipartiteGraphTestDriver {
      * 			empty.
      */
     public void createGraph(String graphName) {
-        graphs.put(graphName, new BipartiteGraph<String>());
+        graphs.put(graphName, new BipartiteGraph<String, String>());
     }
 
     

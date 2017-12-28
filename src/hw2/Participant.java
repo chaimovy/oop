@@ -26,10 +26,23 @@ public class Participant extends Node<String,Transaction>{
 	
 	
 	@Override
-	public List<String> simulate(BipartiteGraph<String> graph) throws Exception 
+	public void simulate(BipartiteGraph<String,Node<String,Transaction>> graph) 
 	{
-		return graph.listChildren(getLabel());
-			
+		List<String> children;
+		try {
+			children = graph.listChildren(getLabel());
+			while(!graph.getNodeMap().get(getLabel()).getOutBuffer().isEmpty())
+			{
+				Transaction tx=graph.getNodeMap().get(getLabel()).getOutBuffer().poll();
+				for (String pipe : children) {
+					if (tx != null)
+						graph.getNodeMap().get(pipe).addTransaction(tx);
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class BipartiteGraph<T> {
+public class BipartiteGraph<T,Z> {
     /*Abstraction Function:
      * represents a black-white bipartite graph, where black nodes are connected 
      * to white nodes by directed edges 
@@ -24,6 +24,12 @@ public class BipartiteGraph<T> {
 	private Map<T, Map<T, T>> blackParents; // key = node label
 	private Map<T, Map<T, T>> whiteParents;
 	private Map<T, Map<T, T>> children;
+	private Map<T, Z> nodeMap;
+	
+	public Map<T, Z> getNodeMap()
+	{
+		return nodeMap;
+	}
     /**
      * @modifies this
      * @effects Creates a new graph named graphName. The graph is initially
@@ -33,6 +39,7 @@ public class BipartiteGraph<T> {
     	blackParents=new HashMap<T,Map<T, T>>();
     	whiteParents=new HashMap<T,Map<T, T>>();
         children=new HashMap<T,Map<T,T>>();
+        nodeMap=new HashMap<T,Z>();
         CheckRep();
     }
 

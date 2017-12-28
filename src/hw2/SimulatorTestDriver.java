@@ -1,6 +1,5 @@
 package hw2;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;

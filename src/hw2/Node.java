@@ -1,10 +1,9 @@
 package hw2;
 
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public  class Node<T,V>  {
+public class Node<T,V> implements Simulatable<T,Node<T,V>> {
 	protected Queue<V> buffer;
 	protected Queue<V> outBuffer;
 	private T label;
@@ -13,12 +12,8 @@ public  class Node<T,V>  {
 		buffer = new LinkedBlockingQueue<V>();
 		outBuffer = new LinkedBlockingQueue<V>();
 	}
-	
-
-
-	public List<T> simulate(BipartiteGraph<T> graph) throws Exception {
-		return null;
-	}
+	@Override
+	public void simulate(BipartiteGraph<T, Node<T,V>> graph) {}
 
 	public  Boolean addTransaction(V tx) {
 		if (buffer.add(tx))
@@ -33,11 +28,7 @@ public  class Node<T,V>  {
 		return outBuffer;
 	}
 
-
-
 	public T getLabel() {
 		return label;
 	}
-
-
 }

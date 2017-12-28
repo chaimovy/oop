@@ -1,17 +1,13 @@
 package hw2;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 
 public class Simulator<T, V>  {
-	private BipartiteGraph<T> graph;
-	private Map<T, Node<T,V>> nodeMap;
+	private BipartiteGraph<T, Node<T,V>> graph;
+	//private Map<T, Node<T,V>> nodeMap;
 	public Simulator(){
-		graph = new BipartiteGraph<T>();
-		nodeMap = new HashMap<T, Node<T,V>>();
+		graph = new BipartiteGraph<T, Node<T,V>>();
+		//nodeMap = new HashMap<T, Node<T,V>>();
 	}
 	
 	/**
@@ -27,13 +23,13 @@ public class Simulator<T, V>  {
 	 */
 	public void addPipe(T pipe,Node<T,V> pipeLabel) throws Exception {
 	    graph.addBlackNode(pipe);
-	    nodeMap.put(pipe,pipeLabel);
+	    graph.getNodeMap().put(pipe,pipeLabel);
 	}
 	
 	
 	public void addFilter(T filter,Node<T,V> filterLabel) throws Exception {
 	    graph.addWhiteNode(filter);
-	    nodeMap.put(filter,filterLabel);
+	    graph.getNodeMap().put(filter,filterLabel);
 	}
 	
 	/**
@@ -62,45 +58,23 @@ public class Simulator<T, V>  {
 	 */
 
 	public void sendTransaction(T pipeLabel, V tx) {
-		nodeMap.get(pipeLabel).addTransaction(tx);
+		graph.getNodeMap().get(pipeLabel).addTransaction(tx);
     }
 
 
 	public void simulate() throws Exception 
 	{
-		List<T> children = new ArrayList<T>(); 
 		for(T pipe : graph.listBlackNodes()) {
-			children=nodeMap.get(pipe).simulate(graph);
-			while(!nodeMap.get(pipe).getBuffer().isEmpty())
-			{
-				V tx=nodeMap.get(pipe).getBuffer().poll();
-				for (T filter : children) {
-					if (tx != null)
-						nodeMap.get(filter).addTransaction(tx);
-				}
-			}
+			graph.getNodeMap().get(pipe).simulate(graph);
 		}
-
 		for(T filter : graph.listWhiteNodes()) {
-			children=nodeMap.get(filter).simulate(graph);
-			while(!nodeMap.get(filter).getOutBuffer().isEmpty())
-			{
-				V tx=nodeMap.get(filter).getOutBuffer().poll();
-				for (T pipe : children) {
-					if (tx != null)
-						nodeMap.get(pipe).addTransaction(tx);
-				}
-			}
+			graph.getNodeMap().get(filter).simulate(graph);
 		}
 	}
 
 	public Queue<V> listContents(T nodeLabel)
 	{
-		Node<T,V> node = nodeMap.get(nodeLabel);
+		Node<T,V> node = graph.getNodeMap().get(nodeLabel);
 			return node.getBuffer();
-
 	}
-
-
-
 }
