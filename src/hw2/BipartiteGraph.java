@@ -25,7 +25,10 @@ public class BipartiteGraph<T,Z> {
 	private Map<T, Map<T, T>> whiteParents;
 	private Map<T, Map<T, T>> children;
 	private Map<T, Z> nodeMap;
-	
+	/**
+     * @modifies none
+     * @return nodes mapping
+     */
 	public Map<T, Z> getNodeMap()
 	{
 		return nodeMap;

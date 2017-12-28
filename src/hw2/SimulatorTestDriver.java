@@ -128,8 +128,12 @@ public class SimulatorTestDriver {
 	 * @modifies simulator named simName
 	 * @effects runs simulator named simName for a single time slice.
 	 */
-	public void simulate(String simName) throws Exception {
-		simulators.get(simName).simulate();
+	public void simulate(String simName){
+		try {
+			simulators.get(simName).simulate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

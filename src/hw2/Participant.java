@@ -36,11 +36,11 @@ public class Participant extends Node<String,Transaction>{
 				Transaction tx=graph.getNodeMap().get(getLabel()).getOutBuffer().poll();
 				for (String pipe : children) {
 					if (tx != null)
-						graph.getNodeMap().get(pipe).addTransaction(tx);
+						if(!graph.getNodeMap().get(pipe).addTransaction(tx))
+							graph.getNodeMap().get(getLabel()).addTransaction(tx);
 				}
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
