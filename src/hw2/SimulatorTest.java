@@ -55,16 +55,14 @@ public class SimulatorTest {
 		driver.addEdge("sim2", "c", "p2", "2");
 		
 		// create transaction
-		Transaction t = new Transaction("p3", 10);
-		driver.sendTransaction("sim1", "c1", t);
-		driver.sendTransaction("sim1", "c2", t);
+		driver.sendTransaction("sim1", "c1", new Transaction("p3", 10));
+		driver.sendTransaction("sim1", "c2", new Transaction("p3", 10));
+		driver.sendTransaction("sim1", "p1", new Transaction("p3", 30));
 		
 		// init validations
-		assertEquals(driver.getParticipantBalace("sim1", "p1"), 0, 0.001);
-		assertEquals(driver.getParticipantBalace("sim1", "p2"), 0, 0.001);
-		assertEquals(driver.getParticipantBalace("sim1", "p3"), 0, 0.001);
-		assertEquals(driver.listContents("sim1", "c1"), "");
-		assertEquals(driver.listContents("sim1", "c2"), "");
+		assertEquals(2, driver.getParticipantBalace("sim1", "p1"), 0.001);
+		assertEquals(0, driver.getParticipantBalace("sim1", "p2"), 0.001);
+		assertEquals(0, driver.getParticipantBalace("sim1", "p3"), 0.001);
 		assertEquals(driver.listContents("sim1", "c1"), "10.0");
 		assertEquals(driver.listContents("sim1", "c2"), "10.0");
 
@@ -72,19 +70,29 @@ public class SimulatorTest {
 		driver.simulate("sim1");
 
 		// validate simulation
-		assertEquals(0.0, driver.getParticipantBalace("sim1", "p1"), 0.001);
-		assertEquals(3.0, driver.getParticipantBalace("sim1", "p2"), 0.001);
-		assertEquals(10.0, driver.getParticipantBalace("sim1", "p3"), 0.001);
-		assertEquals("", driver.listContents("sim1", "c1"));
+		assertEquals(8, driver.getParticipantBalace("sim1", "p1"), 0.001);
+		assertEquals(3, driver.getParticipantBalace("sim1", "p2"), 0.001);
+		assertEquals(10, driver.getParticipantBalace("sim1", "p3"), 0.001);
+		assertEquals("22.0", driver.listContents("sim1", "c1"));
 		assertEquals("7.0", driver.listContents("sim1", "c2"));
 		
 		//simulate
 		driver.simulate("sim1");
 
 		// validate simulation
-		assertEquals(0, driver.getParticipantBalace("sim1", "p1"), 0.001);
-		assertEquals(3, driver.getParticipantBalace("sim1", "p2"), 0.001);
+		assertEquals(8, driver.getParticipantBalace("sim1", "p1"), 0.001);
+		assertEquals(9, driver.getParticipantBalace("sim1", "p2"), 0.001);
 		assertEquals(17, driver.getParticipantBalace("sim1", "p3"), 0.001);
+		assertEquals("", driver.listContents("sim1", "c1"));
+		assertEquals("16.0", driver.listContents("sim1", "c2"));
+		
+		//simulate
+		driver.simulate("sim1");
+
+		// validate simulation
+		assertEquals(8, driver.getParticipantBalace("sim1", "p1"), 0.001);
+		assertEquals(9, driver.getParticipantBalace("sim1", "p2"), 0.001);
+		assertEquals(33, driver.getParticipantBalace("sim1", "p3"), 0.001);
 		assertEquals(driver.listContents("sim1", "c1"),"");
 		assertEquals(driver.listContents("sim1", "c2"),"");
 	}

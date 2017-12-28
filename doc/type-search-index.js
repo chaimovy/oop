@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"hw2","l":"BipartiteGraph"}]
