@@ -225,27 +225,36 @@ public class BipartiteGraph<T,Z> {
         Iterator<Map.Entry<T, Map<T,T>>> itrParent=whiteParents.entrySet().iterator();
         Iterator<Map.Entry<T,T>>itrChild;
         Set<T> set ;
-        while (itrParent.hasNext()) {
+      //for all white nodes
+        while (itrParent.hasNext()) {     
         	Map.Entry<T, Map<T,T>> curEntryParent=itrParent.next();
-        	assert !blackParents.containsKey(curEntryParent.getKey());
+        	//check that they are not black
+        	assert !blackParents.containsKey(curEntryParent.getKey());  
         	itrChild = curEntryParent.getValue().entrySet().iterator();
-        	while (itrChild.hasNext()) {
+        	//for every child of some white node
+        	while (itrChild.hasNext()) {  
         		Map.Entry<T,T> curEntryChild=itrChild.next();
-        		assert blackParents.containsKey(curEntryChild.getValue()) && !whiteParents.containsKey(curEntryChild.getValue());
+        		//check that child is black
+        		assert blackParents.containsKey(curEntryChild.getValue()) && !whiteParents.containsKey(curEntryChild.getValue()); 
         		set= new HashSet<T>(curEntryParent.getValue().values());
-        		assert set.size()==curEntryParent.getValue().values().size();
+        		assert set.size()==curEntryParent.getValue().values().size(); 
         	}
         	
         }
         itrParent=blackParents.entrySet().iterator();
-        while (itrParent.hasNext()) {
+      //for all black nodes
+        while (itrParent.hasNext()) {    
         	Map.Entry<T, Map<T,T>> curEntryParent=itrParent.next();
+        	 //check that they are not white
         	assert !whiteParents.containsKey(curEntryParent.getKey());
         	itrChild = curEntryParent.getValue().entrySet().iterator();
-        	while (itrChild.hasNext()) {
+        	 //for every child of some black node
+        	while (itrChild.hasNext()) { 
         		Map.Entry<T,T> curEntryChild=itrChild.next();
-        		assert whiteParents.containsKey(curEntryChild.getValue()) && !blackParents.containsKey(curEntryChild.getValue());
+        		 //check that child is white
+        		assert whiteParents.containsKey(curEntryChild.getValue()) && !blackParents.containsKey(curEntryChild.getValue()); 
         		set= new HashSet<T>(curEntryParent.getValue().values());
+        		//check that there is no more than 1 edge between each per of nodes
         		assert set.size()==curEntryParent.getValue().values().size();
         	}
         }
