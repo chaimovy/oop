@@ -1,16 +1,12 @@
 package hw2;
 
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class Participant extends Node<String,Transaction>{
 	private double fee;
-	private Queue<Transaction> outBuffer;
 	public Participant(String label, double fee) {
 		super(label);
 		this.fee = fee;
-		outBuffer = new LinkedBlockingQueue<Transaction>();
 	}
 
 	public Boolean addTransaction(Transaction tx)
@@ -22,7 +18,8 @@ public class Participant extends Node<String,Transaction>{
 		else
 		{
 			buffer.add(new Transaction(this.getLabel(), fee));
-			outBuffer.add(new Transaction(tx.getDest(), tx.getValue() - fee));
+			if(tx.getValue() - fee > 0)
+				outBuffer.add(new Transaction(tx.getDest(), tx.getValue() - fee));
 		}
 		return true;
 	}

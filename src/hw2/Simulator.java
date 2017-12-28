@@ -71,19 +71,25 @@ public class Simulator<T, V>  {
 		List<T> children = new ArrayList<T>(); 
 		for(T pipe : graph.listBlackNodes()) {
 			children=nodeMap.get(pipe).simulate(graph);
-			for (T filter : children) {
+			while(!nodeMap.get(pipe).getBuffer().isEmpty())
+			{
 				V tx=nodeMap.get(pipe).getBuffer().poll();
-				if (tx != null)
-					nodeMap.get(filter).addTransaction(tx);
+				for (T filter : children) {
+					if (tx != null)
+						nodeMap.get(filter).addTransaction(tx);
+				}
 			}
 		}
 
 		for(T filter : graph.listWhiteNodes()) {
 			children=nodeMap.get(filter).simulate(graph);
-			for (T pipe : children) {
+			while(!nodeMap.get(filter).getOutBuffer().isEmpty())
+			{
 				V tx=nodeMap.get(filter).getOutBuffer().poll();
-				if (tx != null)
-					nodeMap.get(pipe).addTransaction(tx);
+				for (T pipe : children) {
+					if (tx != null)
+						nodeMap.get(pipe).addTransaction(tx);
+				}
 			}
 		}
 	}

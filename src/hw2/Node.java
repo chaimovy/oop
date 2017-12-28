@@ -12,7 +12,6 @@ public  class Node<T,V>  {
 		this.label=label;
 		buffer = new LinkedBlockingQueue<V>();
 		outBuffer = new LinkedBlockingQueue<V>();
-		
 	}
 	
 

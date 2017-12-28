@@ -1,6 +1,8 @@
 package hw2;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Queue;
 
@@ -98,8 +100,13 @@ public class SimulatorTestDriver {
 	public String listContents(String simName, String channelName) {
 		Queue<Transaction> contents = simulators.get(simName).listContents(channelName);
 		String str = "";
-		for(Transaction content : contents)
-			str += content.getValue() + " ";
+		Iterator<Transaction> itr=contents.iterator();
+    	while (itr.hasNext()) {
+    		Transaction curTransaction=itr.next();
+    		str += String.valueOf(curTransaction.getValue());
+    		if(itr.hasNext())
+    			str += " ";
+		}
 		return str;
 	}
 
